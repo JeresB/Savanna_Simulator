@@ -14,28 +14,36 @@
 #include <QVector>
 #include <QList>
 #include <QMetaType>
-#include "mainAnimal.hpp"
-//class MainAnimal;
+#include <QTimer>
+#include <QRectF>
+#include "animal.hpp"
 
 class Simulation : public QGraphicsScene {
   Q_OBJECT
-  //QThread simu_thread;
   public:
     Simulation(QObject *parent = 0);
     ~Simulation();
-    void start_simulation();
-    void terminate_simulation();
+
+    int getMAX_X();
+    int getMAX_Y();
+
+    int borderLeft();
+    int borderRight();
+    int borderTop();
+    int borderBottom();
+
+    void peuplement();
 
   signals:
-    void signal_passeuntour();
+    //void signal_passeuntour();
 
   public slots:
     void slot_setTailleX(int);
     void slot_setTailleY(int);
-    void slot_simulation_animal();
     void slot_nb_animaux(int);
-    void handleResults(int x, int y, char id);
-    void slot_effacer();
+    void slot_simulation_animal();
+
+    void update();
 
   private:
     QGraphicsRectItem *terrain;
@@ -44,18 +52,19 @@ class Simulation : public QGraphicsScene {
     int tailleX = 0, tailleY = 0;
 
     int nb_animaux = 50;
-
-    MainAnimal *simulation_animal;
-    int resultat = 0;
+    int sens = 10;
 
     QPixmap lion;
     QPixmap gazelle;
     QPixmap gigot;
     QPixmap tombe;
 
-    QList<QGraphicsPixmapItem*> tab_image;
-    //QGraphicsPixmapItem **tab2Dimage;
+    QVector<Animal*> tab_anim;
     bool simu_en_cours = false;
+
+    Animal * leopard;
+
+    QTimer *timer;
 };
 
 #endif

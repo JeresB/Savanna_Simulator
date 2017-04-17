@@ -11,9 +11,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   this->setCentralWidget(widget_general);
 
   // Création de la scène de jeu
-  simulation_graphique = new Simulation(this);
-  simulation_graphique->setBackgroundBrush(QColor(13, 139, 242));
-  myview = new QGraphicsView(simulation_graphique, this);
+  simulation = new Simulation(this);
+  simulation->setBackgroundBrush(QColor(13, 139, 242));
+  myview = new QGraphicsView(simulation, this);
 
   qbl_general->addWidget(BuildGroupBoxControle());
   qbl_general->addWidget(myview);
@@ -79,12 +79,12 @@ QGroupBox *MainWindow::BuildGroupBoxControle() {
 
   group_box->setLayout(box_layout);
 
-  connect(nb_animaux_simu, SIGNAL(valueChanged(int)), simulation_graphique, SLOT(slot_nb_animaux(int)));
-  connect(tailleX_simu, SIGNAL(valueChanged(int)), simulation_graphique, SLOT(slot_setTailleX(int)));
-  connect(tailleY_simu, SIGNAL(valueChanged(int)), simulation_graphique, SLOT(slot_setTailleY(int)));
+  connect(nb_animaux_simu, SIGNAL(valueChanged(int)), simulation, SLOT(slot_nb_animaux(int)));
+  connect(tailleX_simu, SIGNAL(valueChanged(int)), simulation, SLOT(slot_setTailleX(int)));
+  connect(tailleY_simu, SIGNAL(valueChanged(int)), simulation, SLOT(slot_setTailleY(int)));
 
 
-  connect(simulation_bouton, SIGNAL(clicked()), simulation_graphique, SLOT(slot_simulation_animal()));
+  connect(simulation_bouton, SIGNAL(clicked()), simulation, SLOT(slot_simulation_animal()));
 
   connect(plein_ecran, SIGNAL(clicked()), this, SLOT(slot_pleinecran()));
   connect(console, SIGNAL(clicked()), this, SLOT(slot_console()));

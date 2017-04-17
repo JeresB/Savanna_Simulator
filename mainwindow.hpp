@@ -60,7 +60,7 @@ class MainWindow : public QMainWindow {
 
     QGraphicsView *myview;
 
-    Simulation *simulation_graphique;
+    Simulation *simulation;
 };
 
 #endif

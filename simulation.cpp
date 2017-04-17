@@ -1,9 +1,7 @@
 #include "simulation.hpp"
 
 Simulation::Simulation(QObject *parent) : QGraphicsScene(parent) {
-  qRegisterMetaType<QVector<Animal*> >("QVector<Animal*>");
-
-  simulation_animal = new MainAnimal;
+  //qRegisterMetaType<QVector<Animal*> >("QVector<Animal*>");
 
   QRect ecran = QApplication::desktop()->availableGeometry();
   hauteur = ecran.height();
@@ -13,17 +11,18 @@ Simulation::Simulation(QObject *parent) : QGraphicsScene(parent) {
   tailleY = hauteur * 0.5;
 
   lion = QPixmap("lion.png");
-  gazelle = QPixmap("gazelle2.png");
-  gigot = QPixmap("mange.png");
-  tombe = QPixmap("rip.png");
+  //gazelle = QPixmap("gazelle2.png");
+  //gigot = QPixmap("mange.png");
+  //tombe = QPixmap("rip.png");
 
   terrain = new QGraphicsRectItem(0, 0, tailleX, tailleY);
   terrain->setBrush(QColor(15, 72, 242));
   this->addItem(terrain);
-  //simulation_animal->setSimulation(this);
-  connect(simulation_animal, SIGNAL(resultReady(int, int, char)), this, SLOT(handleResults(int, int, char)));
-  connect(simulation_animal, SIGNAL(effacer()), this, SLOT(slot_effacer()));
 
+  //On gere le timer
+  timer = new QTimer(this);
+  connect(timer, SIGNAL(timeout()), this, SLOT(update()));
+  timer->start(30);
 }
 
 Simulation::~Simulation() {}
@@ -31,149 +30,85 @@ Simulation::~Simulation() {}
 void Simulation::slot_setTailleX(int x) {
   tailleX = x;
   terrain->setRect(0, 0, tailleX, tailleY);
-  simulation_animal->setTailleX(tailleX/32);
 }
 
 void Simulation::slot_setTailleY(int y) {
   tailleY = y;
   terrain->setRect(0, 0, tailleX, tailleY);
-  simulation_animal->setTailleY(tailleY/32);
 }
 
 void Simulation::slot_simulation_animal() {
-  //simulation_animal->doWork();
   if (simu_en_cours == false) {
-    //this->start_simulation();
-    simulation_animal->start();
+    //fonction demarrer la simulation
+    peuplement();
+    //leopard = new Animal(this, 0, 0, 100, lion);
+    //QGraphicsPixmapItem* leo = new QGraphicsPixmapItem(lion);
+    //leo->setPos(100, 100);
+    //this->addItem(leopard);
+    sens = 10;
+
     simu_en_cours = true;
   } else {
-    //this->terminate_simulation();
-    simulation_animal->terminate();
+    //fonction effacer la liste d'animaux;
     simu_en_cours = false;
   }
 }
 
-void Simulation::start_simulation() {
-  QGraphicsPixmapItem *temp = new QGraphicsPixmapItem();
-  //
-  // tab2Dimage = new QGraphicsPixmapItem*[tailleY / 32];
-  // for ( int i = 0; i < tailleY / 32; i++)
-  // tab2Dimage[i] = new QGraphicsPixmapItem[tailleX / 32];
-  //
-  // for (int i = 0; i < tailleY / 32; i++) {
-  //   for (int j = 0; j < tailleX / 32; j++) {
-  //     //tab2Dimage[i][j] = new QGraphicsPixmapItem();
-  //   }
-  // }
-  for (int i = 0; i < nb_animaux; i++) {
-    tab_image << temp;
+void Simulation::peuplement() {
+  srand(time(NULL));
+  for (int i = 0; i < nb_animaux; i++){
+    int x = rand() % this->borderRight() + this->borderLeft();
+    int y = rand() % this->borderBottom() + this->borderTop();
+    if (x >= this->borderRight()) x = x - lion.width();
+    if (y >= this->borderBottom()) y = y - lion.width();
+    int e = rand() % 100;
+    tab_anim << new Animal(this, x, y, e, lion);
+    this->addItem(tab_anim.last());
   }
 }
 
-void Simulation::terminate_simulation() {
-  // for (int i = 0; i < tailleY / 32; i++) {
-  //   for (int j = 0; j < tailleX / 32; j++) {
-  //     if (tab2Dimage[i][j].hasFocus() == true) {
-  //     //  this->removeItem(tab2Dimage[i][j]);
-  //     }
-  //   }
-  // }
+void Simulation::update() {
+  if (simu_en_cours == true) {
+    //this->removeItem(leopard);
+    //leopard->bouge();
+    for (int i = 0; i < nb_animaux; i++) {
+      if (tab_anim[i]->getEnergie() > 0) {
+        tab_anim[i]->bouge();
+      }
 
-  // for ( int i = 0; i < tailleX / 32; i++)
-  // delete tab2Dimage[i];
-  // delete tab2Dimage;
-
-  for (int i = 0; i < nb_animaux; i++) {
-    this->removeItem(tab_image.value(i));
-    tab_image.removeAt(i);
+    }
+    //this->addItem(leopard);
   }
 }
 
 void Simulation::slot_nb_animaux(int nb_anim) {
   nb_animaux = nb_anim;
-  simulation_animal->setNbAnimaux(nb_animaux);
 }
 
-void Simulation::slot_effacer() {
-  for (int i = 0; i < tab_image.size(); i++) {
-     this->removeItem(tab_image.value(i));
-     tab_image.removeAt(i);
-  }
+int Simulation::getMAX_X() {
+  return tailleX;
 }
 
-void Simulation::handleResults(int x, int y, char id) {
-  //int x, y;
-  //char id;
-  // for (int i = 0; i < tab_image.size(); i++) {
-  //    this->removeItem(tab_image.value(i));
-  //    tab_image.removeAt(i);
-  // }
+int Simulation::getMAX_Y() {
+  return tailleY;
+}
 
+int Simulation::borderLeft() {
+  QRectF r = terrain->rect();
+  return r.left();
+}
 
-  QGraphicsPixmapItem *temp = new QGraphicsPixmapItem();
-  //for (int i = 0; i < nb_animaux; i++) {
-    // id = vect[i]->getID();
-    // x = vect[i]->getX() * 32;
-    // y = vect[i]->getY() * 32;
-    //this->removeItem(tab_image.value(i));
-    qDebug() << "id de l'animal" << id << "pos : " << x << y;
-    if (id == 'L') {
-      qDebug() << "lion";
-       temp->setPixmap(lion);
-       temp->setPos(x*32, y*32);
-       tab_image << temp;
-       this->addItem(tab_image.last());
-     } else if (id == 'G') {
-       qDebug() << "gazelle";
-       temp->setPixmap(gazelle);
-       temp->setPos(x*32, y*32);
-       tab_image << temp;
-       this->addItem(tab_image.last());
-      //  tab_image.value(i)->setPixmap(gazelle);
-      //  tab_image.value(i)->setPos(x, y);
-      //  this->addItem(tab_image.value(i));
-     } else if (id == 'X') {
-       qDebug() << "mort";
-       temp->setPixmap(tombe);
-       temp->setPos(x*32, y*32);
-       tab_image << temp;
-       this->addItem(tab_image.last());
-      //  tab_image.value(i)->setPixmap(tombe);
-      //  tab_image.value(i)->setPos(x, y);
-      //  this->addItem(tab_image.value(i));
-     } else if (id == 'M') {
-       qDebug() << "mange";
-       temp->setPixmap(gigot);
-       temp->setPos(x*32, y*32);
-       tab_image << temp;
-       this->addItem(tab_image.last());
-      //  tab_image.value(i)->setPixmap(gigot);
-      //  tab_image.value(i)->setPos(x, y);
-      //  this->addItem(tab_image.value(i));
-     } else {
-       qDebug() << "aucun ??!?!";
-     }
-  }
-    // if (vect->getID() == 'L') {
-    //    tab_image.value()
-    //    //tab2Dimage[i][j].setPixmap(lion);
-    //    //tab2Dimage[i][j].setPos(i * 32, j * 32);
-    //    //this->addItem(tab2Dimage[i][j]);
-    //  }// else if (element == 'G') {
-      //  temp->setPixmap(gazelle);
-      //  temp->setPos(x, y);
-      //  tab_image.append(temp);
-      //  this->addItem(tab_image.value(i));
-     //} else if (element == 'X') {
-      //  temp->setPixmap(tombe);
-      //  temp->setPos(x, y);
-      //  tab_image.append(temp);
-      //  this->addItem(tab_image.value(i));
-     //} else if (element == 'M') {
-      //  temp->setPixmap(gigot);
-      //  temp->setPos(x, y);
-      //  tab_image.append(temp);
-      //  this->addItem(tab_image.value(i));
-     //}
+int Simulation::borderRight() {
+  QRectF r = terrain->rect();
+  return r.right();
+}
 
-//}
+int Simulation::borderTop() {
+  QRectF r = terrain->rect();
+  return r.top();
+}
+
+int Simulation::borderBottom() {
+  QRectF r = terrain->rect();
+  return r.bottom();
+}
