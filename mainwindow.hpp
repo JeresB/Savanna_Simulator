@@ -12,9 +12,11 @@
 #include <QMenuBar>
 #include <QGraphicsView>
 #include <QSlider>
+#include <QCheckBox>
 #include <QLabel>
 #include "console.hpp"
 #include "simulation.hpp"
+#include "statistiques.hpp"
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
@@ -24,8 +26,10 @@ class MainWindow : public QMainWindow {
     QGroupBox *BuildGroupBoxControle();
 
   public slots:
+    void slot_simulation();
     void slot_pleinecran();
     void slot_console();
+    void slot_statistiques();
 
   private:
     QWidget *widget_general;
@@ -54,13 +58,16 @@ class MainWindow : public QMainWindow {
     QSlider *tailleY_simu;
 
     QPushButton *simulation_bouton;
+    QPushButton *statistiques;
 
-    QPushButton *plein_ecran;
+    QCheckBox *plein_ecran;
     QPushButton *console;
     QPushButton *quitter;
 
     Console *consoleWindow;
     bool console_ok = false;
+    bool statistiques_ok = false;
+    Statistiques *statistiquesWindow;
 
     QGraphicsView *myview;
 

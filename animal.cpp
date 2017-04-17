@@ -14,6 +14,10 @@ int Animal::getEnergie(){
   return this->energie;
 }
 
+char Animal::getID() {
+  return id;
+}
+
 void Animal::setEnergie(int energie){
   this->energie = energie;
 }
@@ -39,4 +43,9 @@ void Animal::bouge() {
       break;
   }
   energie--;
+  if (energie == 0) {
+    this->setPixmap(monde->getImageMort());
+    if(this->getID() == 'L') monde->setLion(monde->getLion() - 1);
+    else if(this->getID() == 'G') monde->setGazelle(monde->getGazelle() - 1);
+  }
 }

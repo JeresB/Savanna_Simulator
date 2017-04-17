@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   menuFichier = menuBar()->addMenu(tr("&Fichier"));
 
   consoleWindow = new Console;
+  statistiquesWindow = new Statistiques;
 }
 
 MainWindow::~MainWindow(){}
@@ -41,10 +42,10 @@ QGroupBox *MainWindow::BuildGroupBoxControle() {
   nb_animaux_simu->setRange(10, 200);
   proportion_label = new QLabel("Proportion Lions / Gazelles", this);
   proportion_simu = new QSlider(Qt::Horizontal);
-  proportion_simu->setRange(1, 10);
+  proportion_simu->setRange(2, 20);
   vitesse_label = new QLabel("Vitesse de la simulation", this);
   vitesse_simu = new QSlider(Qt::Horizontal);
-  vitesse_simu->setRange(1, 50);
+  vitesse_simu->setRange(1, 200);
 
   energie_label = new QLabel("Energie initiale", this);
   energie_simu = new QSlider(Qt::Horizontal);
@@ -57,8 +58,9 @@ QGroupBox *MainWindow::BuildGroupBoxControle() {
   tailleY_simu->setRange(100, 550);
 
   simulation_bouton = new QPushButton("Simulation", this);
+  statistiques = new QPushButton("Statistiques", this);
 
-  plein_ecran = new QPushButton("Plein Ecran", this);
+  plein_ecran = new QCheckBox("Plein Ecran", this);
   console = new QPushButton("Console", this);
   quitter = new QPushButton("Quitter", this);
 
@@ -77,6 +79,7 @@ QGroupBox *MainWindow::BuildGroupBoxControle() {
   simu_controle2->addWidget(tailleY_simu);
 
   simu_controle3->addWidget(simulation_bouton);
+  simu_controle3->addWidget(statistiques);
 
   box_control->addWidget(plein_ecran);
   box_control->addWidget(console);
@@ -90,12 +93,14 @@ QGroupBox *MainWindow::BuildGroupBoxControle() {
   group_box->setLayout(box_layout);
 
   connect(nb_animaux_simu, SIGNAL(valueChanged(int)), simulation, SLOT(slot_nb_animaux(int)));
+  connect(proportion_simu, SIGNAL(valueChanged(int)), simulation, SLOT(slot_setProportion(int)));
   connect(vitesse_simu, SIGNAL(valueChanged(int)), simulation, SLOT(slot_vitesse(int)));
   connect(energie_simu, SIGNAL(valueChanged(int)), simulation, SLOT(slot_setEnergie(int)));
   connect(tailleX_simu, SIGNAL(valueChanged(int)), simulation, SLOT(slot_setTailleX(int)));
   connect(tailleY_simu, SIGNAL(valueChanged(int)), simulation, SLOT(slot_setTailleY(int)));
 
-  connect(simulation_bouton, SIGNAL(clicked()), simulation, SLOT(slot_simulation_animal()));
+  connect(simulation_bouton, SIGNAL(clicked()), this, SLOT(slot_simulation()));
+  connect(statistiques, SIGNAL(clicked()), this, SLOT(slot_statistiques()));
 
   connect(plein_ecran, SIGNAL(clicked()), this, SLOT(slot_pleinecran()));
   connect(console, SIGNAL(clicked()), this, SLOT(slot_console()));
@@ -103,6 +108,10 @@ QGroupBox *MainWindow::BuildGroupBoxControle() {
 
   group_box->setAlignment(Qt::AlignTop);
   return group_box;
+}
+
+void MainWindow::slot_simulation() {
+  simulation->slot_simulation_animal(statistiquesWindow);
 }
 
 void MainWindow::slot_pleinecran() {
@@ -117,5 +126,15 @@ void MainWindow::slot_console() {
   } else {
     consoleWindow->hide();
     console_ok = false;
+  }
+}
+
+void MainWindow::slot_statistiques() {
+  if (statistiques_ok == false) {
+    statistiquesWindow->show();
+    statistiques_ok = true;
+  } else {
+    statistiquesWindow->hide();
+    statistiques_ok = false;
   }
 }

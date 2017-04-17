@@ -1,4 +1,6 @@
 #include "simulation.hpp"
+#include "gazelle.hpp"
+#include "lion.hpp"
 
 Simulation::Simulation(QObject *parent) : QGraphicsScene(parent) {
   //qRegisterMetaType<QVector<Animal*> >("QVector<Animal*>");
@@ -11,9 +13,9 @@ Simulation::Simulation(QObject *parent) : QGraphicsScene(parent) {
   tailleY = hauteur * 0.5;
 
   lion = QPixmap("lion.png");
-  //gazelle = QPixmap("gazelle2.png");
-  //gigot = QPixmap("mange.png");
-  //tombe = QPixmap("rip.png");
+  gazelle = QPixmap("gazelle2.png");
+  gigot = QPixmap("mange.png");
+  tombe = QPixmap("rip.png");
 
   terrain = new QGraphicsRectItem(0, 0, tailleX, tailleY);
   terrain->setBrush(QColor(15, 72, 242));
@@ -37,8 +39,17 @@ void Simulation::slot_setTailleY(int y) {
   terrain->setRect(0, 0, tailleX, tailleY);
 }
 
+void Simulation::slot_setProportion(int p) {
+  if (p%2 == 0) {
+    proportion = p;
+  } else {
+    proportion = p - 1;
+  }
+
+}
+
 void Simulation::slot_vitesse(int v) {
-  vitesse = v;
+  vitesse = 201 - v;
   timer->stop();
   timer->start(vitesse);
 }
@@ -47,9 +58,12 @@ void Simulation::slot_setEnergie(int e) {
   energie = e;
 }
 
-void Simulation::slot_simulation_animal() {
+void Simulation::slot_simulation_animal(Statistiques* &statsWindow) {
   if (simu_en_cours == false) {
     //fonction demarrer la simulation
+    connect(this, SIGNAL(signal_valeurs(int, int, int)), statsWindow, SLOT(slot_resultat_valeur(int, int, int)));
+    temps = 0;
+    temps_simulation.restart();
     peuplement();
     //leopard = new Animal(this, 0, 0, 100, lion);
     //QGraphicsPixmapItem* leo = new QGraphicsPixmapItem(lion);
@@ -60,7 +74,9 @@ void Simulation::slot_simulation_animal() {
     simu_en_cours = true;
   } else {
     //fonction effacer la liste d'animaux;
+    terminer();
     simu_en_cours = false;
+    temps = temps_simulation.elapsed();
   }
 }
 
@@ -71,8 +87,46 @@ void Simulation::peuplement() {
     int y = rand() % this->borderBottom() + this->borderTop();
     if (x >= this->borderRight()) x = x - lion.width();
     if (y >= this->borderBottom()) y = y - lion.width();
-    tab_anim << new Animal(this, x, y, energie, lion);
+
+    if (i%proportion == 0) {
+      tab_anim << new Lion(this, x, y, energie, lion);
+      lion_vivant++;
+    } else {
+      tab_anim << new Gazelle(this, x, y, energie, gazelle);
+      gazelle_vivante++;
+    }
+
     this->addItem(tab_anim.last());
+  }
+}
+
+void Simulation::affrontement(int animal) {
+  for (int i = 0; i < tab_anim.size(); i++) {
+    if (tab_anim[animal]->getID() == 'L') {
+      if(tab_anim[animal]->collidesWithItem(tab_anim[i])) {
+        if (tab_anim[i]->getID() == 'G') {
+          tab_anim[animal]->setEnergie(tab_anim[animal]->getEnergie() + tab_anim[i]->getEnergie());
+          tab_anim[i]->setEnergie(0);
+          tab_anim[i]->setPixmap(gigot);
+          gazelle_vivante--;
+        }
+      }
+    } else if (tab_anim[animal]->getID() == 'G') {
+      if(tab_anim[animal]->collidesWithItem(tab_anim[i])) {
+        if (tab_anim[i]->getID() == 'L') {
+          tab_anim[i]->setEnergie(tab_anim[i]->getEnergie() + tab_anim[animal]->getEnergie());
+          tab_anim[animal]->setEnergie(0);
+          tab_anim[animal]->setPixmap(gigot);
+          gazelle_vivante--;
+        }
+      }
+    }
+  }
+}
+
+void Simulation::terminer() {
+  for (int i = 0; i < tab_anim.size(); i++) {
+    this->removeItem(tab_anim[i]);
   }
 }
 
@@ -82,11 +136,12 @@ void Simulation::update() {
     //leopard->bouge();
     for (int i = 0; i < nb_animaux; i++) {
       if (tab_anim[i]->getEnergie() > 0) {
+        affrontement(i);
         tab_anim[i]->bouge();
       }
 
     }
-    //this->addItem(leopard);
+    emit signal_valeurs(lion_vivant, gazelle_vivante, temps_simulation.elapsed());
   }
 }
 
@@ -100,6 +155,26 @@ int Simulation::getMAX_X() {
 
 int Simulation::getMAX_Y() {
   return tailleY;
+}
+
+int Simulation::getLion() {
+  return lion_vivant;
+}
+
+int Simulation::getGazelle() {
+  return gazelle_vivante;
+}
+
+QPixmap Simulation::getImageMort() {
+  return tombe;
+}
+
+void Simulation::setLion(int l) {
+  lion_vivant = l;
+}
+
+void Simulation::setGazelle(int g) {
+  gazelle_vivante = g;
 }
 
 int Simulation::borderLeft() {

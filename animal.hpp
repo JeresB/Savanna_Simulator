@@ -6,6 +6,7 @@
 #include <QGraphicsPixmapItem>
 #include <QPixmap>
 #include <QString>
+#include <QDebug>
 using namespace std;
 
 class Simulation;
@@ -19,6 +20,7 @@ class Animal : public QGraphicsPixmapItem {
     //int getX();
     //int getY();
     int getEnergie();
+    virtual char getID() = 0;
 
     //void setX(int x);
     //void setY(int y);
@@ -29,11 +31,12 @@ class Animal : public QGraphicsPixmapItem {
 
     void bouge();
 
-  private :
+  protected :
     //int x, y;
     int energie;
     int taille;
     Simulation * monde;
+    char id = 'A';
 };
 
 #endif
