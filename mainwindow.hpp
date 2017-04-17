@@ -43,7 +43,11 @@ class MainWindow : public QMainWindow {
     QSlider *nb_animaux_simu;
     QLabel *proportion_label;
     QSlider *proportion_simu;
+    QLabel *vitesse_label;
+    QSlider *vitesse_simu;
 
+    QLabel *energie_label;
+    QSlider *energie_simu;
     QLabel *tailleX_label;
     QSlider *tailleX_simu;
     QLabel *tailleY_label;

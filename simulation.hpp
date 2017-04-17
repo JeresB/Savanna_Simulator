@@ -41,6 +41,8 @@ class Simulation : public QGraphicsScene {
     void slot_setTailleX(int);
     void slot_setTailleY(int);
     void slot_nb_animaux(int);
+    void slot_vitesse(int);
+    void slot_setEnergie(int);
     void slot_simulation_animal();
 
     void update();
@@ -52,7 +54,9 @@ class Simulation : public QGraphicsScene {
     int tailleX = 0, tailleY = 0;
 
     int nb_animaux = 50;
+    int energie = 300;
     int sens = 10;
+    int vitesse = 100;
 
     QPixmap lion;
     QPixmap gazelle;

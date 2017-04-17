@@ -42,7 +42,13 @@ QGroupBox *MainWindow::BuildGroupBoxControle() {
   proportion_label = new QLabel("Proportion Lions / Gazelles", this);
   proportion_simu = new QSlider(Qt::Horizontal);
   proportion_simu->setRange(1, 10);
+  vitesse_label = new QLabel("Vitesse de la simulation", this);
+  vitesse_simu = new QSlider(Qt::Horizontal);
+  vitesse_simu->setRange(1, 50);
 
+  energie_label = new QLabel("Energie initiale", this);
+  energie_simu = new QSlider(Qt::Horizontal);
+  energie_simu->setRange(100, 1000);
   tailleX_label = new QLabel("Taille Horizontale", this);
   tailleX_simu = new QSlider(Qt::Horizontal);
   tailleX_simu->setRange(100, 1300);
@@ -60,7 +66,11 @@ QGroupBox *MainWindow::BuildGroupBoxControle() {
   simu_controle1->addWidget(nb_animaux_simu);
   simu_controle1->addWidget(proportion_label);
   simu_controle1->addWidget(proportion_simu);
+  simu_controle1->addWidget(vitesse_label);
+  simu_controle1->addWidget(vitesse_simu);
 
+  simu_controle2->addWidget(energie_label);
+  simu_controle2->addWidget(energie_simu);
   simu_controle2->addWidget(tailleX_label);
   simu_controle2->addWidget(tailleX_simu);
   simu_controle2->addWidget(tailleY_label);
@@ -80,9 +90,10 @@ QGroupBox *MainWindow::BuildGroupBoxControle() {
   group_box->setLayout(box_layout);
 
   connect(nb_animaux_simu, SIGNAL(valueChanged(int)), simulation, SLOT(slot_nb_animaux(int)));
+  connect(vitesse_simu, SIGNAL(valueChanged(int)), simulation, SLOT(slot_vitesse(int)));
+  connect(energie_simu, SIGNAL(valueChanged(int)), simulation, SLOT(slot_setEnergie(int)));
   connect(tailleX_simu, SIGNAL(valueChanged(int)), simulation, SLOT(slot_setTailleX(int)));
   connect(tailleY_simu, SIGNAL(valueChanged(int)), simulation, SLOT(slot_setTailleY(int)));
-
 
   connect(simulation_bouton, SIGNAL(clicked()), simulation, SLOT(slot_simulation_animal()));
 

@@ -22,7 +22,7 @@ Simulation::Simulation(QObject *parent) : QGraphicsScene(parent) {
   //On gere le timer
   timer = new QTimer(this);
   connect(timer, SIGNAL(timeout()), this, SLOT(update()));
-  timer->start(30);
+  timer->start(vitesse);
 }
 
 Simulation::~Simulation() {}
@@ -35,6 +35,16 @@ void Simulation::slot_setTailleX(int x) {
 void Simulation::slot_setTailleY(int y) {
   tailleY = y;
   terrain->setRect(0, 0, tailleX, tailleY);
+}
+
+void Simulation::slot_vitesse(int v) {
+  vitesse = v;
+  timer->stop();
+  timer->start(vitesse);
+}
+
+void Simulation::slot_setEnergie(int e) {
+  energie = e;
 }
 
 void Simulation::slot_simulation_animal() {
@@ -61,8 +71,7 @@ void Simulation::peuplement() {
     int y = rand() % this->borderBottom() + this->borderTop();
     if (x >= this->borderRight()) x = x - lion.width();
     if (y >= this->borderBottom()) y = y - lion.width();
-    int e = rand() % 100;
-    tab_anim << new Animal(this, x, y, e, lion);
+    tab_anim << new Animal(this, x, y, energie, lion);
     this->addItem(tab_anim.last());
   }
 }
