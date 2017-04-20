@@ -9,7 +9,10 @@
 #include <QtCharts>
 #include <QChartView>
 #include <QChart>
-#include <QSplineSeries>
+#include <QPieSeries>
+#include <QPieSlice>
+#include <QBoxLayout>
+#include <QGroupBox>
 using namespace QtCharts;
 
 class Statistiques : public QWidget {
@@ -18,12 +21,13 @@ class Statistiques : public QWidget {
   public:
     explicit Statistiques(QWidget *parent = 0);
     ~Statistiques();
+    QGroupBox* BuildTexteAffichage();
 
   signals:
 
   public slots:
     void update();
-    void slot_resultat_valeur(int, int, int);
+    void slot_resultat_valeur(int, int, int, int);
 
   private:
     QTimer *timer;
@@ -31,8 +35,21 @@ class Statistiques : public QWidget {
 
     QChartView *graphique;
     QChart *chart;
-    QSplineSeries* lion;
-    QSplineSeries* gazelle;
+    QPieSeries* pie;
+    QPieSlice* lion;
+    QPieSlice* gazelle;
+    QPieSlice* mort;
+    QPieSlice* manger;
+
+    QLabel* lion_label;
+    QLabel* gazelle_label;
+    QLabel* mort_label;
+    QLabel* manger_label;
+
+    int lion_vivant = 25;
+    int gazelle_vivante = 25;
+    int animaux_mort = 0;
+    int gazelle_mangees = 0;
 
 };
 

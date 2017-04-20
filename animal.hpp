@@ -25,6 +25,7 @@ class Animal : public QGraphicsPixmapItem {
     //void setX(int x);
     //void setY(int y);
     //void setPos(int x, int y);
+    virtual void setID(char id_set) = 0;
     void setEnergie(int energie);
 
     void affiche();

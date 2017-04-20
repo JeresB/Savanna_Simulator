@@ -61,7 +61,7 @@ void Simulation::slot_setEnergie(int e) {
 void Simulation::slot_simulation_animal(Statistiques* &statsWindow) {
   if (simu_en_cours == false) {
     //fonction demarrer la simulation
-    connect(this, SIGNAL(signal_valeurs(int, int, int)), statsWindow, SLOT(slot_resultat_valeur(int, int, int)));
+    connect(this, SIGNAL(signal_valeurs(int, int, int, int)), statsWindow, SLOT(slot_resultat_valeur(int, int, int, int)));
     temps = 0;
     temps_simulation.restart();
     peuplement();
@@ -108,7 +108,9 @@ void Simulation::affrontement(int animal) {
           tab_anim[animal]->setEnergie(tab_anim[animal]->getEnergie() + tab_anim[i]->getEnergie());
           tab_anim[i]->setEnergie(0);
           tab_anim[i]->setPixmap(gigot);
+          tab_anim[i]->setID('M');
           gazelle_vivante--;
+          gazelle_mange++;
         }
       }
     } else if (tab_anim[animal]->getID() == 'G') {
@@ -117,7 +119,9 @@ void Simulation::affrontement(int animal) {
           tab_anim[i]->setEnergie(tab_anim[i]->getEnergie() + tab_anim[animal]->getEnergie());
           tab_anim[animal]->setEnergie(0);
           tab_anim[animal]->setPixmap(gigot);
+          tab_anim[animal]->setID('M');
           gazelle_vivante--;
+          gazelle_mange++;
         }
       }
     }
@@ -141,7 +145,7 @@ void Simulation::update() {
       }
 
     }
-    emit signal_valeurs(lion_vivant, gazelle_vivante, temps_simulation.elapsed());
+    emit signal_valeurs(lion_vivant, gazelle_vivante, animaux_mort, gazelle_mange);
   }
 }
 
@@ -165,6 +169,10 @@ int Simulation::getGazelle() {
   return gazelle_vivante;
 }
 
+int Simulation::getMort() {
+  return animaux_mort;
+}
+
 QPixmap Simulation::getImageMort() {
   return tombe;
 }
@@ -175,6 +183,10 @@ void Simulation::setLion(int l) {
 
 void Simulation::setGazelle(int g) {
   gazelle_vivante = g;
+}
+
+void Simulation::setMort(int m) {
+  animaux_mort = m;
 }
 
 int Simulation::borderLeft() {

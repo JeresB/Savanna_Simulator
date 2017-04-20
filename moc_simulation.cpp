@@ -68,20 +68,20 @@ static const uint qt_meta_data_Simulation[] = {
        1,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    3,   59,    2, 0x06 /* Public */,
+       1,    4,   59,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       3,    1,   66,    2, 0x0a /* Public */,
-       4,    1,   69,    2, 0x0a /* Public */,
-       5,    1,   72,    2, 0x0a /* Public */,
-       6,    1,   75,    2, 0x0a /* Public */,
-       7,    1,   78,    2, 0x0a /* Public */,
-       8,    1,   81,    2, 0x0a /* Public */,
-       9,    1,   84,    2, 0x0a /* Public */,
-      12,    0,   87,    2, 0x0a /* Public */,
+       3,    1,   68,    2, 0x0a /* Public */,
+       4,    1,   71,    2, 0x0a /* Public */,
+       5,    1,   74,    2, 0x0a /* Public */,
+       6,    1,   77,    2, 0x0a /* Public */,
+       7,    1,   80,    2, 0x0a /* Public */,
+       8,    1,   83,    2, 0x0a /* Public */,
+       9,    1,   86,    2, 0x0a /* Public */,
+      12,    0,   89,    2, 0x0a /* Public */,
 
  // signals: parameters
-    QMetaType::Void, QMetaType::Int, QMetaType::Int, QMetaType::Int,    2,    2,    2,
+    QMetaType::Void, QMetaType::Int, QMetaType::Int, QMetaType::Int, QMetaType::Int,    2,    2,    2,    2,
 
  // slots: parameters
     QMetaType::Void, QMetaType::Int,    2,
@@ -102,7 +102,7 @@ void Simulation::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         Simulation *_t = static_cast<Simulation *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->signal_valeurs((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3]))); break;
+        case 0: _t->signal_valeurs((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3])),(*reinterpret_cast< int(*)>(_a[4]))); break;
         case 1: _t->slot_setTailleX((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 2: _t->slot_setTailleY((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 3: _t->slot_nb_animaux((*reinterpret_cast< int(*)>(_a[1]))); break;
@@ -117,7 +117,7 @@ void Simulation::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         int *result = reinterpret_cast<int *>(_a[0]);
         void **func = reinterpret_cast<void **>(_a[1]);
         {
-            typedef void (Simulation::*_t)(int , int , int );
+            typedef void (Simulation::*_t)(int , int , int , int );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Simulation::signal_valeurs)) {
                 *result = 0;
                 return;
@@ -163,9 +163,9 @@ int Simulation::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void Simulation::signal_valeurs(int _t1, int _t2, int _t3)
+void Simulation::signal_valeurs(int _t1, int _t2, int _t3, int _t4)
 {
-    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
+    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)), const_cast<void*>(reinterpret_cast<const void*>(&_t4)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 QT_WARNING_POP

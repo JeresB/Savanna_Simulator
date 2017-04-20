@@ -18,6 +18,10 @@ char Animal::getID() {
   return id;
 }
 
+void Animal::setID(char id_set) {
+  id = id_set;
+}
+
 void Animal::setEnergie(int energie){
   this->energie = energie;
 }
@@ -45,7 +49,14 @@ void Animal::bouge() {
   energie--;
   if (energie == 0) {
     this->setPixmap(monde->getImageMort());
-    if(this->getID() == 'L') monde->setLion(monde->getLion() - 1);
-    else if(this->getID() == 'G') monde->setGazelle(monde->getGazelle() - 1);
+    if(this->getID() == 'L') {
+      monde->setLion(monde->getLion() - 1);
+      monde->setMort(monde->getMort() + 1);
+      id = 'X';
+    } else if(this->getID() == 'G') {
+      monde->setGazelle(monde->getGazelle() - 1);
+      monde->setMort(monde->getMort() + 1);
+      id = 'X';
+    }
   }
 }

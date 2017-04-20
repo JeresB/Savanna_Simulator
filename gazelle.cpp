@@ -13,3 +13,7 @@ void Gazelle::affiche() {
 char Gazelle::getID() {
   return id;
 }
+
+void Gazelle::setID(char id_set) {
+  id = id_set;
+}

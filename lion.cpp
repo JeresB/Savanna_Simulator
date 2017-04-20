@@ -13,3 +13,7 @@ void Lion::affiche() {
 char Lion::getID() {
   return id;
 }
+
+void Lion::setID(char id_set) {
+  id = id_set;
+}

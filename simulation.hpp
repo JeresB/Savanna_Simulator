@@ -31,9 +31,11 @@ class Simulation : public QGraphicsScene {
     QPixmap getImageMort();
     int getLion();
     int getGazelle();
+    int getMort();
 
     void setLion(int l);
     void setGazelle(int g);
+    void setMort(int m);
 
     int borderLeft();
     int borderRight();
@@ -45,7 +47,7 @@ class Simulation : public QGraphicsScene {
     void terminer();
 
   signals:
-    void signal_valeurs(int, int, int);
+    void signal_valeurs(int, int, int, int);
 
   public slots:
     void slot_setTailleX(int);
@@ -68,9 +70,10 @@ class Simulation : public QGraphicsScene {
     int proportion = 2;
     int energie = 300;
     int sens = 10;
-    int vitesse = 1000;
+    int vitesse = 10;
 
     int lion_vivant = 0, gazelle_vivante = 0;
+    int animaux_mort = 0, gazelle_mange = 0;
 
     QPixmap lion;
     QPixmap gazelle;

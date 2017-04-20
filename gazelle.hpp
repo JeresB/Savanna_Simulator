@@ -10,4 +10,5 @@ class Gazelle : public Animal {
 		// Methode
 		void affiche();
 		char getID();
+		void setID(char id_set);
 };
