@@ -50,8 +50,9 @@ void Simulation::slot_setProportion(int p) {
 
 void Simulation::slot_vitesse(int v) {
   vitesse = 201 - v;
-  timer->stop();
-  timer->start(vitesse);
+  timer->setInterval(vitesse);
+  //timer->stop();
+  //timer->start(vitesse);
 }
 
 void Simulation::slot_setEnergie(int e) {
@@ -65,6 +66,7 @@ void Simulation::slot_simulation_animal(Statistiques* &statsWindow) {
     temps = 0;
     temps_simulation.restart();
     peuplement();
+    //timer->start(vitesse);
     //leopard = new Animal(this, 0, 0, 100, lion);
     //QGraphicsPixmapItem* leo = new QGraphicsPixmapItem(lion);
     //leo->setPos(100, 100);
@@ -75,6 +77,7 @@ void Simulation::slot_simulation_animal(Statistiques* &statsWindow) {
   } else {
     //fonction effacer la liste d'animaux;
     terminer();
+    //timer->stop();
     simu_en_cours = false;
     temps = temps_simulation.elapsed();
   }
@@ -83,10 +86,8 @@ void Simulation::slot_simulation_animal(Statistiques* &statsWindow) {
 void Simulation::peuplement() {
   srand(time(NULL));
   for (int i = 0; i < nb_animaux; i++){
-    int x = rand() % this->borderRight() + this->borderLeft();
-    int y = rand() % this->borderBottom() + this->borderTop();
-    if (x >= this->borderRight()) x = x - lion.width();
-    if (y >= this->borderBottom()) y = y - lion.width();
+    int x = rand() % (this->borderRight() - lion.width()) + this->borderLeft();
+    int y = rand() % (this->borderBottom() - lion.width()) + this->borderTop();
 
     if (i%proportion == 0) {
       tab_anim << new Lion(this, x, y, energie, lion);
@@ -128,6 +129,43 @@ void Simulation::affrontement(int animal) {
   }
 }
 
+int Simulation::plus_proche(int a) {
+  int distance = 9999;
+  int d = 0;
+  int indice = -1;
+  int sens = -1;
+  if (tab_anim[a]->getID() == 'L') {
+    for (int i = 0; i < tab_anim.size(); i++) {
+      if (tab_anim[i]->getID() == 'G') {
+        d = sqrt(pow(tab_anim[i]->x() - tab_anim[a]->x(), 2) + pow(tab_anim[i]->y() - tab_anim[a]->y(), 2));
+        if (d < distance) {
+          distance = d;
+          indice = i;
+        }
+      }
+    }
+    sens = deplacement_intelligent(a, indice);
+  }
+  return sens;
+}
+
+int Simulation::deplacement_intelligent(int a1, int a2) {
+  int sens = -1;
+  if (a2 != -1) {
+    if (tab_anim[a1]->x() > tab_anim[a2]->x()) {
+      sens = 0;
+    } else if (tab_anim[a1]->x() < tab_anim[a2]->x()) {
+      sens = 1;
+    } else if (tab_anim[a1]->y() > tab_anim[a2]->y()) {
+      sens = 2;
+    } else if (tab_anim[a1]->y() < tab_anim[a2]->y()) {
+      sens = 3;
+    }
+  }
+
+  return sens;
+}
+
 void Simulation::terminer() {
   for (int i = 0; i < tab_anim.size(); i++) {
     this->removeItem(tab_anim[i]);
@@ -135,18 +173,20 @@ void Simulation::terminer() {
 }
 
 void Simulation::update() {
-  if (simu_en_cours == true) {
+  int sens = -1;
+  //if (simu_en_cours == true) {
     //this->removeItem(leopard);
     //leopard->bouge();
-    for (int i = 0; i < nb_animaux; i++) {
+    for (int i = 0; i < tab_anim.size(); i++) {
       if (tab_anim[i]->getEnergie() > 0) {
         affrontement(i);
-        tab_anim[i]->bouge();
+        sens = plus_proche(i);
+        tab_anim[i]->bouge(sens);
       }
 
     }
     emit signal_valeurs(lion_vivant, gazelle_vivante, animaux_mort, gazelle_mange);
-  }
+  //}
 }
 
 void Simulation::slot_nb_animaux(int nb_anim) {

@@ -17,6 +17,7 @@
 #include <QTimer>
 #include <QTime>
 #include <QRectF>
+#include <cmath>
 #include "animal.hpp"
 #include "statistiques.hpp"
 
@@ -44,6 +45,8 @@ class Simulation : public QGraphicsScene {
 
     void peuplement();
     void affrontement(int animal);
+    int plus_proche(int a);
+    int deplacement_intelligent(int a1, int a2);
     void terminer();
 
   signals:

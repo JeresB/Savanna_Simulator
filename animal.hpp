@@ -30,7 +30,7 @@ class Animal : public QGraphicsPixmapItem {
 
     void affiche();
 
-    void bouge();
+    void bouge(int sens);
 
   protected :
     //int x, y;

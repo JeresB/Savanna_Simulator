@@ -30,8 +30,10 @@ void Animal::affiche(){
   monde->addItem(this);
 }
 
-void Animal::bouge() {
-  int sens = rand() % 4;
+void Animal::bouge(int sens) {
+  if(sens == -1) {
+    sens = rand() % 4;
+  }
   switch(sens) {
     case 0:
       if (this->x() > monde->borderLeft()) this->setX(this->x() - 1);
@@ -49,14 +51,12 @@ void Animal::bouge() {
   energie--;
   if (energie == 0) {
     this->setPixmap(monde->getImageMort());
+    this->setID('X');
+    monde->setMort(monde->getMort() + 1);
     if(this->getID() == 'L') {
       monde->setLion(monde->getLion() - 1);
-      monde->setMort(monde->getMort() + 1);
-      id = 'X';
     } else if(this->getID() == 'G') {
       monde->setGazelle(monde->getGazelle() - 1);
-      monde->setMort(monde->getMort() + 1);
-      id = 'X';
     }
   }
 }
