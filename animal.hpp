@@ -21,12 +21,14 @@ class Animal : public QGraphicsPixmapItem {
     //int getY();
     int getEnergie();
     virtual char getID() = 0;
+    virtual int getNature();
 
     //void setX(int x);
     //void setY(int y);
     //void setPos(int x, int y);
     virtual void setID(char id_set) = 0;
     void setEnergie(int energie);
+    virtual void setNature(int n);
 
     void affiche();
 
@@ -38,6 +40,7 @@ class Animal : public QGraphicsPixmapItem {
     int taille;
     Simulation * monde;
     char id = 'A';
+    int nature_naissance;
 };
 
 #endif

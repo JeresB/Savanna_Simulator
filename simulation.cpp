@@ -1,6 +1,7 @@
 #include "simulation.hpp"
 #include "gazelle.hpp"
 #include "lion.hpp"
+#include <Vegetal.hpp>
 
 Simulation::Simulation(QObject *parent) : QGraphicsScene(parent) {
   //qRegisterMetaType<QVector<Animal*> >("QVector<Animal*>");
@@ -14,6 +15,7 @@ Simulation::Simulation(QObject *parent) : QGraphicsScene(parent) {
 
   lion = QPixmap("lion.png");
   gazelle = QPixmap("gazelle2.png");
+  vegetal = QPixmap("bush.png");
   gigot = QPixmap("mange.png");
   tombe = QPixmap("rip.png");
 
@@ -89,15 +91,58 @@ void Simulation::peuplement() {
     int x = rand() % (this->borderRight() - lion.width()) + this->borderLeft();
     int y = rand() % (this->borderBottom() - lion.width()) + this->borderTop();
 
-    if (i%proportion == 0) {
-      tab_anim << new Lion(this, x, y, energie, lion);
-      lion_vivant++;
+    if (i < nb_animaux * 0.2) {
+      tab_anim << new Vegetal(this, x, y, 0, vegetal);
     } else {
-      tab_anim << new Gazelle(this, x, y, energie, gazelle);
-      gazelle_vivante++;
+      if (i%proportion == 0) {
+        tab_anim << new Lion(this, x, y, energie, lion);
+        lion_vivant++;
+      } else {
+        tab_anim << new Gazelle(this, x, y, energie, gazelle);
+        gazelle_vivante++;
+      }
     }
 
     this->addItem(tab_anim.last());
+  }
+}
+
+void Simulation::nature(int i) {
+  bool ajout_OK = false;
+  //tab_anim[i]->setNature(tab_anim[i]->getNature() + 1);
+  nature_naissance++;
+  if (/*tab_anim[i]->getNature()*/nature_naissance >= FREQUENCE_NATURE) {
+    //tab_anim[i]->setNature(0);
+    nature_naissance = 0;
+    int direction = rand() % 4;
+    switch (direction) {
+      case 0:
+        if(tab_anim[i]->x() + 32 < borderBottom()) {
+          tab_anim << new Vegetal(this, tab_anim[i]->x() + 32, tab_anim[i]->y(), 0, vegetal);
+          ajout_OK = true;
+        }
+        break;
+      case 1:
+        if(tab_anim[i]->x() - 32 > borderTop()) {
+          tab_anim << new Vegetal(this, tab_anim[i]->x() - 32, tab_anim[i]->y(), 0, vegetal);
+          ajout_OK = true;
+        }
+        break;
+      case 2:
+        if(tab_anim[i]->y() + 32 < borderRight()) {
+          tab_anim << new Vegetal(this, tab_anim[i]->x(), tab_anim[i]->y() + 32, 0, vegetal);
+          ajout_OK = true;
+        }
+        break;
+      case 3:
+        if(tab_anim[i]->y() - 32 > borderLeft()) {
+          tab_anim << new Vegetal(this, tab_anim[i]->x(), tab_anim[i]->y() - 32, 0, vegetal);
+          ajout_OK = true;
+        }
+        break;
+    }
+    if(ajout_OK == true)
+      this->addItem(tab_anim.last());
   }
 }
 
@@ -116,13 +161,14 @@ void Simulation::affrontement(int animal) {
       }
     } else if (tab_anim[animal]->getID() == 'G') {
       if(tab_anim[animal]->collidesWithItem(tab_anim[i])) {
-        if (tab_anim[i]->getID() == 'L') {
-          tab_anim[i]->setEnergie(tab_anim[i]->getEnergie() + tab_anim[animal]->getEnergie());
-          tab_anim[animal]->setEnergie(0);
-          tab_anim[animal]->setPixmap(gigot);
-          tab_anim[animal]->setID('M');
-          gazelle_vivante--;
-          gazelle_mange++;
+        if (tab_anim[i]->getID() == 'V') {
+          tab_anim[animal]->setEnergie(tab_anim[animal]->getEnergie() * 2);
+          this->removeItem(tab_anim[i]);
+          tab_anim[i]->setID('X');
+          //tab_anim[animal]->setPixmap(gigot);
+          //tab_anim[animal]->setID('M');
+          //gazelle_vivante--;
+          //gazelle_mange++;
         }
       }
     }
@@ -145,6 +191,17 @@ int Simulation::plus_proche(int a) {
       }
     }
     sens = deplacement_intelligent(a, indice);
+  } else if (tab_anim[a]->getID() == 'G') {
+    for (int i = 0; i < tab_anim.size(); i++) {
+      if (tab_anim[i]->getID() == 'V') {
+        d = sqrt(pow(tab_anim[i]->x() - tab_anim[a]->x(), 2) + pow(tab_anim[i]->y() - tab_anim[a]->y(), 2));
+        if (d < distance) {
+          distance = d;
+          indice = i;
+        }
+      }
+    }
+    sens = deplacement_intelligent(a, indice);
   }
   return sens;
 }
@@ -152,14 +209,18 @@ int Simulation::plus_proche(int a) {
 int Simulation::deplacement_intelligent(int a1, int a2) {
   int sens = -1;
   if (a2 != -1) {
-    if (tab_anim[a1]->x() > tab_anim[a2]->x()) {
-      sens = 0;
-    } else if (tab_anim[a1]->x() < tab_anim[a2]->x()) {
-      sens = 1;
-    } else if (tab_anim[a1]->y() > tab_anim[a2]->y()) {
-      sens = 2;
-    } else if (tab_anim[a1]->y() < tab_anim[a2]->y()) {
-      sens = 3;
+    if(rand()%2 == 0) {
+      if (tab_anim[a1]->x() > tab_anim[a2]->x()) {
+        sens = 0;
+      } else if (tab_anim[a1]->x() < tab_anim[a2]->x()) {
+        sens = 1;
+      }
+    } else {
+      if (tab_anim[a1]->y() > tab_anim[a2]->y()) {
+        sens = 2;
+      } else if (tab_anim[a1]->y() < tab_anim[a2]->y()) {
+        sens = 3;
+      }
     }
   }
 
@@ -182,6 +243,9 @@ void Simulation::update() {
         affrontement(i);
         sens = plus_proche(i);
         tab_anim[i]->bouge(sens);
+      }
+      if (tab_anim[i]->getID() == 'V') {
+        nature(i);
       }
 
     }

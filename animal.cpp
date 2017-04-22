@@ -18,8 +18,16 @@ char Animal::getID() {
   return id;
 }
 
+int Animal::getNature() {
+  return nature_naissance;
+}
+
 void Animal::setID(char id_set) {
   id = id_set;
+}
+
+void Animal::setNature(int n) {
+  nature_naissance = n;
 }
 
 void Animal::setEnergie(int energie){

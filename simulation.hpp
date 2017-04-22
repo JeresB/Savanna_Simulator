@@ -21,6 +21,8 @@
 #include "animal.hpp"
 #include "statistiques.hpp"
 
+#define FREQUENCE_NATURE 200
+
 class Simulation : public QGraphicsScene {
   Q_OBJECT
   public:
@@ -44,6 +46,7 @@ class Simulation : public QGraphicsScene {
     int borderBottom();
 
     void peuplement();
+    void nature(int indice);
     void affrontement(int animal);
     int plus_proche(int a);
     int deplacement_intelligent(int a1, int a2);
@@ -74,12 +77,14 @@ class Simulation : public QGraphicsScene {
     int energie = 300;
     int sens = 10;
     int vitesse = 10;
+    int nature_naissance = 0;
 
     int lion_vivant = 0, gazelle_vivante = 0;
     int animaux_mort = 0, gazelle_mange = 0;
 
     QPixmap lion;
     QPixmap gazelle;
+    QPixmap vegetal;
     QPixmap gigot;
     QPixmap tombe;
 
