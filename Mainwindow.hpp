@@ -4,37 +4,32 @@
 #include <QtWidgets>
 #include <QMainWindow>
 #include <QVBoxLayout>
-#include <QHBoxLayout>
 #include <QBoxLayout>
-#include <QMenu>
 #include <QGroupBox>
 #include <QPushButton>
-#include <QMenuBar>
 #include <QGraphicsView>
 #include <QSlider>
 #include <QCheckBox>
 #include <QLabel>
-#include "console.hpp"
-#include "simulation.hpp"
-#include "statistiques.hpp"
+
+#include "Simulation.hpp"
+#include "Statistiques.hpp"
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
   public:
     MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    ~MainWindow(){};
+
     QGroupBox *BuildGroupBoxControle();
 
   public slots:
-    void slot_simulation();
     void slot_pleinecran();
-    void slot_console();
     void slot_statistiques();
 
   private:
     QWidget *widget_general;
-
-    QMenu *menuFichier;
+    QGraphicsView *myview;
 
     QGroupBox *group_box;
     QBoxLayout *box_layout;
@@ -61,16 +56,9 @@ class MainWindow : public QMainWindow {
     QPushButton *statistiques;
 
     QCheckBox *plein_ecran;
-    QPushButton *console;
     QPushButton *quitter;
 
-    Console *consoleWindow;
-    bool console_ok = false;
-    bool statistiques_ok = false;
     Statistiques *statistiquesWindow;
-
-    QGraphicsView *myview;
-
     Simulation *simulation;
 };
 

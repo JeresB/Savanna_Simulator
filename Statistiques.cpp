@@ -1,4 +1,4 @@
-#include "statistiques.hpp"
+#include "Statistiques.hpp"
 
 Statistiques::Statistiques(QWidget *parent) : QWidget(parent) {
   this->setMinimumSize(800, 400);
@@ -27,10 +27,7 @@ Statistiques::Statistiques(QWidget *parent) : QWidget(parent) {
   gazelle = pie->slices().at(1);
   mort = pie->slices().at(2);
   manger = pie->slices().at(3);
-  // slice->setExploded();
-  // slice->setLabelVisible();
-  // slice->setPen(QPen(Qt::darkGreen, 2));
-  // slice->setBrush(Qt::green);
+
 
 
   graphique = new QChartView(chart);
@@ -38,6 +35,8 @@ Statistiques::Statistiques(QWidget *parent) : QWidget(parent) {
 
   qbl_general->addWidget(graphique);
   qbl_general->addWidget(BuildTexteAffichage());
+
+  connect(pie, SIGNAL(hovered(QPieSlice*, bool)), this, SLOT(slot_hover_slice(QPieSlice*, bool)));
 }
 
 Statistiques::~Statistiques(){}
@@ -70,7 +69,7 @@ QGroupBox* Statistiques::BuildTexteAffichage() {
   return box_texte;
 }
 
-void Statistiques::slot_resultat_valeur(int l, int g, int mo, int ma) {
+void Statistiques::slot_resultat_valeur(int l, int g, int mo, int ma, int ve) {
   lion->setValue(l);
   gazelle->setValue(g);
   mort->setValue(mo);
@@ -81,4 +80,9 @@ void Statistiques::slot_resultat_valeur(int l, int g, int mo, int ma) {
   else gazelle_vivante = g;
   animaux_mort = mo;
   gazelle_mangees = ma;
+}
+
+void Statistiques::slot_hover_slice(QPieSlice* slice, bool state) {
+  slice->setExploded(state);
+  slice->setLabelVisible(state);
 }

@@ -27,7 +27,8 @@ class Statistiques : public QWidget {
 
   public slots:
     void update();
-    void slot_resultat_valeur(int, int, int, int);
+    void slot_resultat_valeur(int, int, int, int, int);
+    void slot_hover_slice(QPieSlice* slice, bool state);
 
   private:
     QTimer *timer;
@@ -46,8 +47,8 @@ class Statistiques : public QWidget {
     QLabel* mort_label;
     QLabel* manger_label;
 
-    int lion_vivant = 25;
-    int gazelle_vivante = 25;
+    int lion_vivant = 20;
+    int gazelle_vivante = 20;
     int animaux_mort = 0;
     int gazelle_mangees = 0;
 
