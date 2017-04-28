@@ -7,15 +7,9 @@
 #include <QPixmap>
 #include <QRect>
 #include <QDesktopWidget>
-#include <QApplication>
-#include <QObject>
-#include <QThread>
 #include <QDebug>
 #include <QVector>
-#include <QList>
-#include <QMetaType>
 #include <QTimer>
-#include <QTime>
 #include <QRectF>
 #include <cmath>
 #include "Animal.hpp"

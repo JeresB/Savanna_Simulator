@@ -158,74 +158,105 @@ void Simulation::peuplement() {
 // Si les lions rencontrent des gazelles
 // Ou des gazelles qui croisent des plantes
 void Simulation::affrontement(int animal) {
+  // Pour tous les animaux
   for (int i = 0; i < vect_animaux.size(); i++) {
-    if (vect_animaux[animal]->getID() == 'L') {
-      if(vect_animaux[animal]->collidesWithItem(vect_animaux[i])) {
-        if (vect_animaux[i]->getID() == 'G') {
-          vect_animaux[animal]->setEnergie(vect_animaux[animal]->getEnergie() + vect_animaux[i]->getEnergie());
-          vect_animaux[i]->setEnergie(0);
-          vect_animaux[i]->setPixmap(gigot);
-          vect_animaux[i]->setID('M');
-          gazelle_vivante--;
-          gazelle_mange++;
-          animaux_mort++;
-        }
-      }
-    } else if (vect_animaux[animal]->getID() == 'G') {
-      if(vect_animaux[animal]->collidesWithItem(vect_animaux[i])) {
-        if (vect_animaux[i]->getID() == 'V') {
-          vect_animaux[animal]->setEnergie(vect_animaux[animal]->getEnergie() * 2);
-          this->removeItem(vect_animaux[i]);
-          vect_animaux[i]->setID('X');
-          vegetal_vivant--;
-        }
-      }
+    // Si un lion rencontre une gazelle
+    if (vect_animaux[animal]->getID() == 'L' && vect_animaux[i]->getID() == 'G' && vect_animaux[animal]->collidesWithItem(vect_animaux[i])) {
+      // Le lion récupère l'énergie de la gazelle
+      vect_animaux[animal]->setEnergie(vect_animaux[animal]->getEnergie() + vect_animaux[i]->getEnergie());
+      // La gazelle n'a plus d'énergie
+      vect_animaux[i]->setEnergie(0);
+      // On modifie l'image de la gazelle à : "Manger"
+      vect_animaux[i]->setPixmap(gigot);
+      // L'id de la gazelle de M pour manger
+      vect_animaux[i]->setID('M');
+
+      // Actualisation des données
+      gazelle_vivante--;
+      gazelle_mange++;
+      animaux_mort++;
+
+    // Si une gazelle rencontre une plante
+    } else if (vect_animaux[animal]->getID() == 'G' && vect_animaux[i]->getID() == 'V' && vect_animaux[animal]->collidesWithItem(vect_animaux[i])) {
+      // Si la gazelle mange une plante alors son énergie est doublée
+      vect_animaux[animal]->setEnergie(vect_animaux[animal]->getEnergie() * 2);
+      // On supprime l'image de la plante de notre simulation
+      this->removeItem(vect_animaux[i]);
+      // L'id de la plante devient X pour mort
+      vect_animaux[i]->setID('X');
+      // Actualisation des données
+      vegetal_vivant--;
     }
   }
 }
 
+// Fonction qui calcul la distance la plus petite
+// Indique le sens le plus intelligent
+// Si le sens vaut -1 alors le déplacement sera aléatoire
 int Simulation::plus_proche(int a) {
   int distance = 9999;
   int d = 0;
   int indice = -1;
   int sens = -1;
+
+  // On veut déplacer un lion
   if (vect_animaux[a]->getID() == 'L') {
+    // On cherche donc une gazelle
     for (int i = 0; i < vect_animaux.size(); i++) {
+      // Si une gazelle à été trouvée
       if (vect_animaux[i]->getID() == 'G') {
+        // On calcul la distance entre le lion et la gazelle
         d = sqrt(pow(vect_animaux[i]->x() - vect_animaux[a]->x(), 2) + pow(vect_animaux[i]->y() - vect_animaux[a]->y(), 2));
+
+        // Si la distance est plus petite que la plus petite distance enregistrer
         if (d < distance) {
+          // On enrengistre la distance la plus petite
           distance = d;
+          // On sauvegarde l'indice vers la gazelle la plus proche
           indice = i;
         }
       }
     }
+    // On appel la fonction déplacement intelligent pour trouver le bon sens
     sens = deplacement_intelligent(a, indice);
+  // On déplace une gazelle
   } else if (vect_animaux[a]->getID() == 'G') {
+    // On cherche une plante ou un lion
     for (int i = 0; i < vect_animaux.size(); i++) {
+      // Si une plante à été trouvée
       if (vect_animaux[i]->getID() == 'V') {
+        // On calcul la distance entre la gazelle et la plante
         d = sqrt(pow(vect_animaux[i]->x() - vect_animaux[a]->x(), 2) + pow(vect_animaux[i]->y() - vect_animaux[a]->y(), 2));
+
+        // Si la distance est plus petite que la plus petite distance enregistrer
         if (d < distance) {
+          // On enrengistre la distance la plus petite
           distance = d;
+          // On sauvegarde l'indice vers la plante la plus proche
+          indice = i;
+        }
+      // Si un lion à été trouvé
+      } else if (vect_animaux[i]->getID() == 'L') {
+        // On calcul la distance entre la gazelle et le lion
+        d = sqrt(pow(vect_animaux[i]->x() - vect_animaux[a]->x(), 2) + pow(vect_animaux[i]->y() - vect_animaux[a]->y(), 2));
+
+        // Si la distance est plus petite que la plus petite distance enregistrer
+        if (d < distance) {
+          // On enrengistre la distance la plus petite
+          distance = d;
+          // On sauvegarde l'indice vers le lion le plus proche
           indice = i;
         }
       }
     }
-    sens = deplacement_intelligent(a, indice);
-  } else if (vect_animaux[a]->getID() == 'G') {
-    for (int i = 0; i < vect_animaux.size(); i++) {
-      if (vect_animaux[i]->getID() == 'L') {
-        d = sqrt(pow(vect_animaux[i]->x() - vect_animaux[a]->x(), 2) + pow(vect_animaux[i]->y() - vect_animaux[a]->y(), 2));
-        if (d < distance) {
-          distance = d;
-          indice = i;
-        }
-      }
-    }
+    // On appel la fonction déplacement intelligent pour trouver le bon sens
     sens = deplacement_intelligent(a, indice);
   }
+  // On retourne le sens le plus intelligent
   return sens;
 }
 
+// Fonction 
 int Simulation::deplacement_intelligent(int a1, int a2) {
   int sens = -1;
   if (a2 != -1) {

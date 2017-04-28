@@ -1,7 +1,7 @@
 #include "Vegetal.hpp"
 #include "Simulation.hpp"
 
-Vegetal::Vegetal(Simulation * m, int x, int y, int energie, QPixmap i) : Animal(m, x, y, energie, i) {};
+Vegetal::Vegetal(Simulation * m, int x, int y, int energie, QPixmap i) : Animal(m, x, y, energie, i) {}
 
 char Vegetal::getID() {
   return id;
