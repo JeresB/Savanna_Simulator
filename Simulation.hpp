@@ -45,6 +45,7 @@ class Simulation : public QGraphicsScene {
     // Méthodes
     void terminer();
     void peuplement();
+    void naissance(char type);
     int plus_proche(int a);
     int deplacement_intelligent(int a1, int a2);
     void affrontement(int animal);

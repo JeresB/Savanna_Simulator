@@ -175,6 +175,11 @@ void Simulation::affrontement(int animal) {
     if (vect_animaux[animal]->getID() == 'L' && vect_animaux[i]->getID() == 'G' && vect_animaux[animal]->collidesWithItem(vect_animaux[i])) {
       // Le lion récupère l'énergie de la gazelle
       vect_animaux[animal]->setEnergie(vect_animaux[animal]->getEnergie() + vect_animaux[i]->getEnergie());
+      // Si l'énergie du lion dépasse l'énergie initiale de plus de 50%
+      // Alors on crée un nouveau lion
+      if(vect_animaux[animal]->getEnergie() > energie * 1.5) {
+        naissance(vect_animaux[animal]->getID());
+      }
       // La gazelle n'a plus d'énergie
       vect_animaux[i]->setEnergie(0);
       // On modifie l'image de la gazelle à : "Manger"
@@ -191,6 +196,11 @@ void Simulation::affrontement(int animal) {
     } else if (vect_animaux[animal]->getID() == 'G' && vect_animaux[i]->getID() == 'V' && vect_animaux[animal]->collidesWithItem(vect_animaux[i])) {
       // Si la gazelle mange une plante alors son énergie est doublée
       vect_animaux[animal]->setEnergie(vect_animaux[animal]->getEnergie() * 2);
+      // Si l'énergie de la gazelle dépasse l'énergie initiale de plus de 50%
+      // Alors on crée une nouvelle gazelle
+      if(vect_animaux[animal]->getEnergie() > energie * 1.5) {
+        naissance(vect_animaux[animal]->getID());
+      }
       // On supprime l'image de la plante de notre simulation
       //if (vect_animaux[i]->hasFocus() == true) {
         this->removeItem(vect_animaux[i]);
@@ -200,6 +210,25 @@ void Simulation::affrontement(int animal) {
       // Actualisation des données
       vegetal_vivant--;
     }
+  }
+}
+
+// Fonction appelée à la naissance d'un nouvel animal
+void Simulation::naissance(char type) {
+  // Variable x, y, energie nécessaire à la création d'un animal --------------------------------- //
+  int x = rand() % (this->borderRight() - lion.width()) + this->borderLeft();
+  int y = rand() % (this->borderBottom() - lion.width()) + this->borderTop();
+  if(i%2) energie += rand() % (energie / 4);
+  else energie -= rand() % (energie / 4);
+  // --------------------------------------------------------------------------------------------- //
+
+  // Création d'un animal en fonction de ses parents
+  if (type == 'G') {
+    vect_animaux << new Gazelle(this, x, y, energie, gazelle);
+    gazelle_vivante++;
+  } else if (type == 'L') {
+    vect_animaux << new Lion(this, x, y, energie, lion);
+    lion_vivant++;
   }
 }
 
