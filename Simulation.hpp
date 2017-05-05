@@ -17,7 +17,8 @@
 #include "Animal.hpp"
 #include "Statistiques.hpp"
 
-#define FREQUENCE_NATURE 1000
+#define FREQUENCE_NATURE 200
+#define MAX_VEGETAUX 30
 
 class Simulation : public QGraphicsScene {
   Q_OBJECT

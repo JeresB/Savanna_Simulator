@@ -51,7 +51,7 @@ void Animal::bouge(int sens) {
     // Si c'est une gazelle alors on décrémente le nombre de gazelle en vies
     else if(this->getID() == 'G') monde->setGazelle(monde->getGazelle() - 1);
 
-    // On définie l'image "mort" à la plce de l'animal
+    // On définie l'image "mort" à la place de l'animal
     this->setPixmap(monde->getImageMort());
     // On déclare son id à X
     this->setID('X');

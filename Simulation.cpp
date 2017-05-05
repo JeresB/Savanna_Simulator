@@ -114,13 +114,13 @@ void Simulation::slot_simulation() {
 void Simulation::terminer() {
   // Effacement de toutes les images
   for (int i = 0; i < vect_animaux.size(); i++) {
-    //if (vect_animaux[i]->hasFocus() == true) {
-      this->removeItem(vect_animaux[i]);
-    //}
+    this->removeItem(vect_animaux[i]);
   }
 
   // Effacement totale du vecteur d'animaux
+  qDebug() << "Taille du vecteur avant clear" << vect_animaux.size();
   vect_animaux.clear();
+  qDebug() << "Taille du vecteur apres clear" << vect_animaux.size();
 
   // Réinitialisation des données
   animaux_mort = 0;
@@ -202,9 +202,7 @@ void Simulation::affrontement(int animal) {
         naissance(vect_animaux[animal]->getID());
       }
       // On supprime l'image de la plante de notre simulation
-      //if (vect_animaux[i]->hasFocus() == true) {
-        this->removeItem(vect_animaux[i]);
-      //}
+      this->removeItem(vect_animaux[i]);
       // On supprime la plante du vecteur
       vect_animaux.removeAt(i);
       // Actualisation des données
@@ -218,7 +216,7 @@ void Simulation::naissance(char type) {
   // Variable x, y, energie nécessaire à la création d'un animal --------------------------------- //
   int x = rand() % (this->borderRight() - lion.width()) + this->borderLeft();
   int y = rand() % (this->borderBottom() - lion.width()) + this->borderTop();
-  if(i%2) energie += rand() % (energie / 4);
+  if(rand()%2) energie += rand() % (energie / 4);
   else energie -= rand() % (energie / 4);
   // --------------------------------------------------------------------------------------------- //
 
@@ -230,6 +228,8 @@ void Simulation::naissance(char type) {
     vect_animaux << new Lion(this, x, y, energie, lion);
     lion_vivant++;
   }
+  // Ajout du nouvelle animal au monde pour qu'on puisse le voir
+  this->addItem(vect_animaux.last());
 }
 
 // Fonction qui calcul la distance la plus petite
@@ -332,17 +332,18 @@ void Simulation::update() {
     for (int i = 0; i < vect_animaux.size(); i++) {
       // Si l'énergie est supérieure à 0 (animal vivant)
       if (vect_animaux[i]->getEnergie() > 0) {
-        // On cherche un sens intelligent
-        sens = plus_proche(i);
-        // Déplacement de l'animal avec un sens intelligent
-        vect_animaux[i]->bouge(sens);
-        // Si les lions rencontrent des gazelles ou que des gazelles rencontrent des plantes
-        affrontement(i);
-      }
-      // Si c'est une plante
-      if (vect_animaux[i]->getID() == 'V') {
-        // On appel la méthode nature qui permet de faire évoluer la nature
-        nature(i);
+        // Si c'est une plante
+        if (vect_animaux[i]->getID() == 'V') {
+          // On appel la méthode nature qui permet de faire évoluer la nature
+          nature(i);
+        } else {
+          // On cherche un sens intelligent
+          sens = plus_proche(i);
+          // Déplacement de l'animal avec un sens intelligent
+          vect_animaux[i]->bouge(sens);
+          // Si les lions rencontrent des gazelles ou que des gazelles rencontrent des plantes
+          affrontement(i);
+        }
       }
     }
 
@@ -355,7 +356,7 @@ void Simulation::update() {
 void Simulation::nature(int i) {
   bool ajout_OK = false; // Pour savoir si une nouvelle plante à été crée
   nature_naissance++; // Agis comme compteur pour éviter que la nature prenne le contrôle
-  if (nature_naissance >= FREQUENCE_NATURE && lion_vivant > 0 ) {
+  if (nature_naissance >= FREQUENCE_NATURE && vegetal_vivant < MAX_VEGETAUX) {
 
     nature_naissance = 0;
     int direction = rand() % 4; // Direction aléatoire
