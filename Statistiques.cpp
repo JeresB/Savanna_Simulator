@@ -14,11 +14,13 @@ Statistiques::Statistiques(QWidget *parent) : QWidget(parent) {
 
   chart = new QChart();
   pie = new QPieSeries();
+  pie->setVerticalPosition(0.6);
 
-  pie->append("Lions vivants", 25);
-  pie->append("Gazelles vivantes", 25);
+  pie->append("Lions vivants", 20);
+  pie->append("Gazelles vivantes", 20);
   pie->append("Animaux morts", 0);
   pie->append("Gazelles mangees", 0);
+  pie->append("Vegetaux", 10);
 
   chart->addSeries(pie);
   chart->setTitle("Statistiques de la Simulation");
@@ -27,8 +29,7 @@ Statistiques::Statistiques(QWidget *parent) : QWidget(parent) {
   gazelle = pie->slices().at(1);
   mort = pie->slices().at(2);
   manger = pie->slices().at(3);
-
-
+  vegetal = pie->slices().at(4);
 
   graphique = new QChartView(chart);
   graphique->setRenderHint(QPainter::Antialiasing);
@@ -46,23 +47,25 @@ void Statistiques::update() {
   gazelle_label->setText("Gazelles vivantes : " + QString::number(gazelle_vivante));
   mort_label->setText("Animaux Morts : " + QString::number(animaux_mort));
   manger_label->setText("Gazelles mangées : " + QString::number(gazelle_mangees));
+  vegetal_label->setText("Vegetaux : " + QString::number(vegetal_vivant));
 }
 
 QGroupBox* Statistiques::BuildTexteAffichage() {
   QGroupBox *box_texte = new QGroupBox("Statistiques Valeurs");
 
   QVBoxLayout *valeurs = new QVBoxLayout;
-  int l = 25;
 
-  lion_label = new QLabel("Lions vivants : 25");
-  gazelle_label = new QLabel("Gazelles vivantes : 25");
+  lion_label = new QLabel("Lions vivants : 20");
+  gazelle_label = new QLabel("Gazelles vivantes : 20");
   mort_label = new QLabel("Animaux Morts : 0");
   manger_label = new QLabel("Gazelles mangées : 0");
+  vegetal_label = new QLabel("Vegataux : 10");
 
   valeurs->addWidget(lion_label);
   valeurs->addWidget(gazelle_label);
   valeurs->addWidget(mort_label);
   valeurs->addWidget(manger_label);
+  valeurs->addWidget(vegetal_label);
 
   box_texte->setLayout(valeurs);
 
@@ -74,12 +77,13 @@ void Statistiques::slot_resultat_valeur(int l, int g, int mo, int ma, int ve) {
   gazelle->setValue(g);
   mort->setValue(mo);
   manger->setValue(ma);
-  if(l < 0) lion_vivant = 0;
-  else lion_vivant = l;
-  if(g < 0) gazelle_vivante = 0;
-  else gazelle_vivante = g;
+  vegetal->setValue(ve);
+
+  lion_vivant = l;
+  gazelle_vivante = g;
   animaux_mort = mo;
   gazelle_mangees = ma;
+  vegetal_vivant = ve;
 }
 
 void Statistiques::slot_hover_slice(QPieSlice* slice, bool state) {

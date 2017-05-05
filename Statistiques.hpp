@@ -41,16 +41,19 @@ class Statistiques : public QWidget {
     QPieSlice* gazelle;
     QPieSlice* mort;
     QPieSlice* manger;
+    QPieSlice* vegetal;
 
     QLabel* lion_label;
     QLabel* gazelle_label;
     QLabel* mort_label;
     QLabel* manger_label;
+    QLabel* vegetal_label;
 
     int lion_vivant = 20;
     int gazelle_vivante = 20;
     int animaux_mort = 0;
     int gazelle_mangees = 0;
+    int vegetal_vivant = 10;
 
 };
 

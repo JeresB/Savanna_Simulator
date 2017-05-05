@@ -11,6 +11,8 @@
 #include <QSlider>
 #include <QCheckBox>
 #include <QLabel>
+#include <QFont>
+#include <QTextEdit>
 
 #include "Simulation.hpp"
 #include "Statistiques.hpp"
@@ -22,10 +24,12 @@ class MainWindow : public QMainWindow {
     ~MainWindow(){};
 
     QGroupBox *BuildGroupBoxControle();
+    void setValueSlider(int value, int i);
 
   public slots:
     void slot_pleinecran();
     void slot_statistiques();
+    void slot_configuration();
 
   private:
     QWidget *widget_general;
@@ -54,9 +58,12 @@ class MainWindow : public QMainWindow {
 
     QPushButton *simulation_bouton;
     QPushButton *statistiques;
+    QPushButton *config;
 
     QCheckBox *plein_ecran;
     QPushButton *quitter;
+
+    QLabel *signature;
 
     Statistiques *statistiquesWindow;
     Simulation *simulation;

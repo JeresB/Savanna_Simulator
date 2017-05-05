@@ -35,6 +35,10 @@ Simulation::Simulation(Statistiques* stats, QObject *parent) : QGraphicsScene(pa
 
   // Connexion entre la simulation et la fenêtre de statistiques
   connect(this, SIGNAL(signal_valeurs(int, int, int, int, int)), statsWindow, SLOT(slot_resultat_valeur(int, int, int, int, int)));
+
+  musique = new QSound("Le_Roi_Lion_-_L_histoire_de_la_vie.wav", this);
+  musique->setLoops(QSound::Infinite);
+  musique->play();
 }
 
 // ---------------------------------------------------------------------------------------------- //
@@ -110,13 +114,20 @@ void Simulation::slot_simulation() {
 void Simulation::terminer() {
   // Effacement de toutes les images
   for (int i = 0; i < vect_animaux.size(); i++) {
-    this->removeItem(vect_animaux[i]);
+    //if (vect_animaux[i]->hasFocus() == true) {
+      this->removeItem(vect_animaux[i]);
+    //}
   }
 
   // Effacement totale du vecteur d'animaux
   vect_animaux.clear();
 
   // Réinitialisation des données
+  animaux_mort = 0;
+  lion_vivant = 0;
+  gazelle_vivante = 0;
+  gazelle_mange = 0;
+  vegetal_vivant = 0;
   emit signal_valeurs(0, 0, 0, 0, 0);
 }
 
@@ -181,9 +192,11 @@ void Simulation::affrontement(int animal) {
       // Si la gazelle mange une plante alors son énergie est doublée
       vect_animaux[animal]->setEnergie(vect_animaux[animal]->getEnergie() * 2);
       // On supprime l'image de la plante de notre simulation
-      this->removeItem(vect_animaux[i]);
-      // L'id de la plante devient X pour mort
-      vect_animaux[i]->setID('X');
+      //if (vect_animaux[i]->hasFocus() == true) {
+        this->removeItem(vect_animaux[i]);
+      //}
+      // On supprime la plante du vecteur
+      vect_animaux.removeAt(i);
       // Actualisation des données
       vegetal_vivant--;
     }
@@ -256,7 +269,7 @@ int Simulation::plus_proche(int a) {
   return sens;
 }
 
-// Fonction 
+// Fonction
 int Simulation::deplacement_intelligent(int a1, int a2) {
   int sens = -1;
   if (a2 != -1) {

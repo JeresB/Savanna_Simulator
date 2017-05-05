@@ -11,7 +11,9 @@
 #include <QVector>
 #include <QTimer>
 #include <QRectF>
+#include <QMediaPlayer>
 #include <cmath>
+#include <QSound>
 #include "Animal.hpp"
 #include "Statistiques.hpp"
 
@@ -90,6 +92,8 @@ class Simulation : public QGraphicsScene {
     QPixmap vegetal;
     QPixmap gigot;
     QPixmap tombe;
+
+    QSound* musique;
 };
 
 #endif

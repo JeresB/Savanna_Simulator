@@ -26,13 +26,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 
 QGroupBox *MainWindow::BuildGroupBoxControle() {
   // Groupe Box contenant tous les contôles
+  // VOIR SCHEMA DETAILLE
   group_box = new QGroupBox(tr("Contrôle"));
 
   // Layout Box orienté de gauche à droite
-  // Contient 4 Verticales Layout Box
+  // Contient tous les layouts
   box_layout = new QBoxLayout(QBoxLayout::LeftToRight);
 
-  // ------ Verticales Layout Box --------------------------------------------------------------- //
+  // Layout contenant : simulation, stats, plein écran et quitter
+  QBoxLayout *box_layout_controle = new QBoxLayout(QBoxLayout::LeftToRight);
+  // Layout contenant : box_layout_controle + le label de signature
+  QBoxLayout *box_layout_controle_signature = new QBoxLayout(QBoxLayout::TopToBottom);
+
+  // ------ Layout Box --------------------------------------------------------------- //
 
   // Contient les sliders : nombre d'animaux, proportion lion/gazelle, vitesse.
   simu_controle1 = new QVBoxLayout;
@@ -42,6 +48,8 @@ QGroupBox *MainWindow::BuildGroupBoxControle() {
   simu_controle3 = new QVBoxLayout;
   // Contient la check box plein écran et le bouton d'arrêt du programme.
   box_control = new QVBoxLayout;
+  // Contient la signature
+  QHBoxLayout* box_signature = new QHBoxLayout;
   // -------------------------------------------------------------------------------------------- //
 
   // ------ Création des sliders : -------------------------------------------------------------- //
@@ -54,37 +62,31 @@ QGroupBox *MainWindow::BuildGroupBoxControle() {
   nb_animaux_label = new QLabel("Nombres d'animaux initials", this);
   nb_animaux_simu = new QSlider(Qt::Horizontal);
   nb_animaux_simu->setRange(10, 200);
-  nb_animaux_simu->setValue(50);
 
   // Slider : proportion lion / gazelle
   proportion_label = new QLabel("Proportion Lions / Gazelles", this);
   proportion_simu = new QSlider(Qt::Horizontal);
   proportion_simu->setRange(2, 20);
-  proportion_simu->setValue(2);
 
   // Slider : vitesse de la simulation
   vitesse_label = new QLabel("Vitesse de la simulation", this);
   vitesse_simu = new QSlider(Qt::Horizontal);
   vitesse_simu->setRange(1, 1000);
-  vitesse_simu->setValue(980);
 
   // Slider : energie initiale
   energie_label = new QLabel("Energie initiale", this);
   energie_simu = new QSlider(Qt::Horizontal);
   energie_simu->setRange(100, 1000);
-  energie_simu->setValue(200);
 
   // Slider : taille en X du terrain de la simulation
   tailleX_label = new QLabel("Taille Horizontale", this);
   tailleX_simu = new QSlider(Qt::Horizontal);
   tailleX_simu->setRange(100, 1300);
-  tailleX_simu->setValue(500);
 
   // Slider : taille en Y du terrain de la simulation
   tailleY_label = new QLabel("Taille Verticale", this);
   tailleY_simu = new QSlider(Qt::Horizontal);
   tailleY_simu->setRange(100, 550);
-  tailleY_simu->setValue(300);
   // -------------------------------------------------------------------------------------------- //
 
   // Bouton Simulation : 2 Fonctions
@@ -95,11 +97,17 @@ QGroupBox *MainWindow::BuildGroupBoxControle() {
   // Bouton pour afficher ou quitter la fenêtre des statistiques
   statistiques = new QPushButton("Statistiques", this);
 
+  // Bouton pour choisir un fichier de config
+  config = new QPushButton("Configuration", this);
+
   // Check Box pour activer / désactiver le plein écran
   plein_ecran = new QCheckBox("Plein Ecran", this);
 
   // Bouton pour quitter le programme
   quitter = new QPushButton("Quitter", this);
+
+  // Label de signature
+  signature = new QLabel("</> Jeremy </>", this);
 
   // ------ Ajout de tous les widgets (label, slider, bouton) à leurs layouts respectifs -------- //
   simu_controle1->addWidget(nb_animaux_label);
@@ -116,15 +124,24 @@ QGroupBox *MainWindow::BuildGroupBoxControle() {
   simu_controle2->addWidget(tailleY_simu);
   simu_controle3->addWidget(simulation_bouton);
   simu_controle3->addWidget(statistiques);
+  simu_controle3->addWidget(config);
   box_control->addWidget(plein_ecran);
   box_control->addWidget(quitter);
+  box_signature->addWidget(signature);
+  box_signature->setAlignment(signature, Qt::AlignHCenter);
   // -------------------------------------------------------------------------------------------- //
+
+  // Ajout de layouts
+  box_layout_controle->addLayout(simu_controle3);
+  box_layout_controle->addLayout(box_control);
+
+  box_layout_controle_signature->addLayout(box_layout_controle);
+  box_layout_controle_signature->addLayout(box_signature);
 
   // ------ Ajout des 4 layouts au Layout principal
   box_layout->addLayout(simu_controle1);
   box_layout->addLayout(simu_controle2);
-  box_layout->addLayout(simu_controle3);
-  box_layout->addLayout(box_control);
+  box_layout->addLayout(box_layout_controle_signature);
   // -------------------------------------------------------------------------------------------- //
 
   // Enfin : Ajout du layout principal à la groupe box
@@ -149,12 +166,25 @@ QGroupBox *MainWindow::BuildGroupBoxControle() {
   connect(simulation_bouton, SIGNAL(clicked()), simulation, SLOT(slot_simulation()));
       // 8) affiche / quitte la fenêtre de statistiques
   connect(statistiques, SIGNAL(clicked()), this, SLOT(slot_statistiques()));
-      // 9) type d'affichage de la fenêtre principale
+      // 9) Permet de choisir un fichier de Configuration
+  connect(config, SIGNAL(clicked()), this, SLOT(slot_configuration()));
+      // 10) type d'affichage de la fenêtre principale
   connect(plein_ecran, SIGNAL(clicked()), this, SLOT(slot_pleinecran()));
-      // 10) quitte le programme
+      // 11) quitte le programme
   connect(quitter, SIGNAL(clicked()), qApp, SLOT(quit()));
   // -------------------------------------------------------------------------------------------- //
   // -------------------------------------------------------------------------------------------- //
+  // -------------------------------------------------------------------------------------------- //
+
+  // On donne un valeur à chaque slider
+  // Astuce : les slots liés aux sliders vont se déclencher
+  // Tous les données vont donc s'afficher dans la console
+  nb_animaux_simu->setValue(50);
+  proportion_simu->setValue(2);
+  vitesse_simu->setValue(980);
+  energie_simu->setValue(200);
+  tailleX_simu->setValue(500);
+  tailleY_simu->setValue(300);
   // -------------------------------------------------------------------------------------------- //
 
   // On retourne la groupe box pour l'afficher dans le widget principal du programme
@@ -183,5 +213,48 @@ void MainWindow::slot_statistiques() {
   } else {
     statistiquesWindow->show();
     qDebug() << "[INFO] : Ouverture de la fenêtre de statistiques !";
+  }
+}
+
+void MainWindow::slot_configuration() {
+  QString file, texte;
+
+  file = QInputDialog::getText(NULL,"Fichier","Choississez un fichier de configuration !");
+
+  QFile fichier(file);
+  if(fichier.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    QTextStream flux(&fichier);
+    for (int i = 0; i < 6; i++) {
+      texte = flux.readLine();
+
+      bool ok;
+      int value = texte.toInt(&ok, 10);
+      setValueSlider(value, i);
+    }
+  }
+
+  fichier.close();
+}
+
+void MainWindow::setValueSlider(int value, int i) {
+  switch (i) {
+    case 0:
+      nb_animaux_simu->setValue(value);
+    break;
+    case 1:
+      proportion_simu->setValue(value);
+    break;
+    case 2:
+      vitesse_simu->setValue(value);
+    break;
+    case 3:
+      energie_simu->setValue(value);
+    break;
+    case 4:
+      tailleX_simu->setValue(value);
+    break;
+    case 5:
+      tailleY_simu->setValue(value);
+    break;
   }
 }

@@ -12,10 +12,10 @@ MAKEFILE      = Makefile
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_NO_DEBUG -DQT_CHARTS_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_NO_DEBUG -DQT_CHARTS_LIB -DQT_WIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -D_REENTRANT
 CFLAGS        = -pipe -O2 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-CXXFLAGS      = -std=c++11 -pipe -O2 -std=gnu++11 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I. -I. -I../../../QT/5.8/gcc_64/include -I../../../QT/5.8/gcc_64/include/QtCharts -I../../../QT/5.8/gcc_64/include/QtWidgets -I../../../QT/5.8/gcc_64/include/QtGui -I../../../QT/5.8/gcc_64/include/QtCore -I. -isystem /usr/include/libdrm -I../../../QT/5.8/gcc_64/mkspecs/linux-g++
+CXXFLAGS      = -g -std=c++11 -pipe -O2 -std=gnu++11 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
+INCPATH       = -I. -I. -I../../../QT/5.8/gcc_64/include -I../../../QT/5.8/gcc_64/include/QtCharts -I../../../QT/5.8/gcc_64/include/QtWidgets -I../../../QT/5.8/gcc_64/include/QtMultimedia -I../../../QT/5.8/gcc_64/include/QtGui -I../../../QT/5.8/gcc_64/include/QtNetwork -I../../../QT/5.8/gcc_64/include/QtCore -I. -isystem /usr/include/libdrm -isystem /usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I../../../QT/5.8/gcc_64/mkspecs/linux-g++
 QMAKE         = /home/jeremy/CyberDirectory/QT/5.8/gcc_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -36,7 +36,7 @@ DISTNAME      = Savanna_Simulator1.0.0
 DISTDIR = /home/jeremy/CyberDirectory/C++/Qt/Savanna_Simulator/.tmp/Savanna_Simulator1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1 -Wl,-rpath,/home/jeremy/CyberDirectory/QT/5.8/gcc_64/lib
-LIBS          = $(SUBLIBS) -L/home/jeremy/CyberDirectory/QT/5.8/gcc_64/lib -lQt5Charts -lQt5Widgets -lQt5Gui -lQt5Core -lGL -lpthread
+LIBS          = $(SUBLIBS) -L/home/jeremy/CyberDirectory/QT/5.8/gcc_64/lib -lQt5Charts -lQt5Widgets -lQt5Multimedia -lQt5Gui -lQt5Network -lQt5Core -lGL -lpthread -lpulse-mainloop-glib -lpulse -lglib-2.0
 AR            = ar cqs
 RANLIB        =
 SED           = sed
@@ -435,7 +435,9 @@ Makefile: Savanna_Simulator.pro ../../../QT/5.8/gcc_64/mkspecs/linux-g++/qmake.c
 		Savanna_Simulator.pro \
 		../../../QT/5.8/gcc_64/lib/libQt5Charts.prl \
 		../../../QT/5.8/gcc_64/lib/libQt5Widgets.prl \
+		../../../QT/5.8/gcc_64/lib/libQt5Multimedia.prl \
 		../../../QT/5.8/gcc_64/lib/libQt5Gui.prl \
+		../../../QT/5.8/gcc_64/lib/libQt5Network.prl \
 		../../../QT/5.8/gcc_64/lib/libQt5Core.prl
 	$(QMAKE) -o Makefile Savanna_Simulator.pro
 ../../../QT/5.8/gcc_64/mkspecs/features/spec_pre.prf:
@@ -610,7 +612,9 @@ Makefile: Savanna_Simulator.pro ../../../QT/5.8/gcc_64/mkspecs/linux-g++/qmake.c
 Savanna_Simulator.pro:
 ../../../QT/5.8/gcc_64/lib/libQt5Charts.prl:
 ../../../QT/5.8/gcc_64/lib/libQt5Widgets.prl:
+../../../QT/5.8/gcc_64/lib/libQt5Multimedia.prl:
 ../../../QT/5.8/gcc_64/lib/libQt5Gui.prl:
+../../../QT/5.8/gcc_64/lib/libQt5Network.prl:
 ../../../QT/5.8/gcc_64/lib/libQt5Core.prl:
 qmake: FORCE
 	@$(QMAKE) -o Makefile Savanna_Simulator.pro
@@ -1114,33 +1118,44 @@ moc_Mainwindow.cpp: ../../../QT/5.8/gcc_64/include/QtWidgets/QtWidgets \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qtwidgetsversion.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QMainWindow \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QVBoxLayout \
-		../../../QT/5.8/gcc_64/include/QtWidgets/QHBoxLayout \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QBoxLayout \
-		../../../QT/5.8/gcc_64/include/QtWidgets/QMenu \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QGroupBox \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QPushButton \
-		../../../QT/5.8/gcc_64/include/QtWidgets/QMenuBar \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsView \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QSlider \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QCheckBox \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QLabel \
+		../../../QT/5.8/gcc_64/include/QtGui/QFont \
+		../../../QT/5.8/gcc_64/include/QtWidgets/QTextEdit \
 		Simulation.hpp \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsScene \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsRectItem \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsPixmapItem \
 		../../../QT/5.8/gcc_64/include/QtGui/QPixmap \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QDesktopWidget \
-		../../../QT/5.8/gcc_64/include/QtWidgets/QApplication \
-		../../../QT/5.8/gcc_64/include/QtCore/QThread \
 		../../../QT/5.8/gcc_64/include/QtCore/QDebug \
 		../../../QT/5.8/gcc_64/include/QtCore/QVector \
-		../../../QT/5.8/gcc_64/include/QtGui/QList \
 		../../../QT/5.8/gcc_64/include/QtCore/QTimer \
-		../../../QT/5.8/gcc_64/include/QtCore/QTime \
 		../../../QT/5.8/gcc_64/include/QtCore/QRectF \
-		Animal.hpp \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/QMediaPlayer \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaplayer.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaobject.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qtmultimediaglobal.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qtmultimedia-config.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmultimedia.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediacontent.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaresource.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qnetworkrequest.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qtnetworkglobal.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qtnetwork-config.h \
 		../../../QT/5.8/gcc_64/include/QtCore/QString \
+		../../../QT/5.8/gcc_64/include/QtCore/QUrl \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaenumdebug.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qaudio.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qnetworkconfiguration.h \
+		Animal.hpp \
 		Statistiques.hpp \
+		../../../QT/5.8/gcc_64/include/QtWidgets/QHBoxLayout \
 		../../../QT/5.8/gcc_64/include/QtCharts/QtCharts \
 		../../../QT/5.8/gcc_64/include/QtCharts/QtChartsDepends \
 		../../../QT/5.8/gcc_64/include/QtCharts/qchartglobal.h \
@@ -1149,7 +1164,6 @@ moc_Mainwindow.cpp: ../../../QT/5.8/gcc_64/include/QtWidgets/QtWidgets \
 		../../../QT/5.8/gcc_64/include/QtCharts/qabstractaxis.h \
 		../../../QT/5.8/gcc_64/include/QtCharts/QChartGlobal \
 		../../../QT/5.8/gcc_64/include/QtGui/QPen \
-		../../../QT/5.8/gcc_64/include/QtGui/QFont \
 		../../../QT/5.8/gcc_64/include/QtCharts/qabstractbarseries.h \
 		../../../QT/5.8/gcc_64/include/QtCharts/QAbstractSeries \
 		../../../QT/5.8/gcc_64/include/QtCharts/qabstractseries.h \
@@ -1228,7 +1242,7 @@ moc_Mainwindow.cpp: ../../../QT/5.8/gcc_64/include/QtWidgets/QtWidgets \
 		Mainwindow.hpp \
 		moc_predefs.h \
 		../../../QT/5.8/gcc_64/bin/moc
-	/home/jeremy/CyberDirectory/QT/5.8/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/mkspecs/linux-g++ -I/home/jeremy/CyberDirectory/C++/Qt/Savanna_Simulator -I/home/jeremy/CyberDirectory/C++/Qt/Savanna_Simulator -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtCharts -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtWidgets -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtGui -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtCore -I/usr/include/c++/4.8 -I/usr/include/x86_64-linux-gnu/c++/4.8 -I/usr/include/c++/4.8/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include Mainwindow.hpp -o moc_Mainwindow.cpp
+	/home/jeremy/CyberDirectory/QT/5.8/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/mkspecs/linux-g++ -I/home/jeremy/CyberDirectory/C++/Qt/Savanna_Simulator -I/home/jeremy/CyberDirectory/C++/Qt/Savanna_Simulator -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtCharts -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtWidgets -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtMultimedia -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtGui -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtNetwork -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtCore -I/usr/include/c++/4.8 -I/usr/include/x86_64-linux-gnu/c++/4.8 -I/usr/include/c++/4.8/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include Mainwindow.hpp -o moc_Mainwindow.cpp
 
 moc_Simulation.cpp: ../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsScene \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qgraphicsscene.h \
@@ -1340,27 +1354,32 @@ moc_Simulation.cpp: ../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsScene \
 		../../../QT/5.8/gcc_64/include/QtCore/qfiledevice.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qvector2d.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qtouchdevice.h \
-		../../../QT/5.8/gcc_64/include/QtWidgets/QApplication \
-		../../../QT/5.8/gcc_64/include/QtWidgets/qapplication.h \
-		../../../QT/5.8/gcc_64/include/QtCore/qcoreapplication.h \
-		../../../QT/5.8/gcc_64/include/QtCore/qeventloop.h \
-		../../../QT/5.8/gcc_64/include/QtGui/qguiapplication.h \
-		../../../QT/5.8/gcc_64/include/QtGui/qinputmethod.h \
-		../../../QT/5.8/gcc_64/include/QtCore/QObject \
-		../../../QT/5.8/gcc_64/include/QtCore/QThread \
-		../../../QT/5.8/gcc_64/include/QtCore/qthread.h \
 		../../../QT/5.8/gcc_64/include/QtCore/QDebug \
 		../../../QT/5.8/gcc_64/include/QtCore/QVector \
-		../../../QT/5.8/gcc_64/include/QtGui/QList \
-		../../../QT/5.8/gcc_64/include/QtCore/QMetaType \
 		../../../QT/5.8/gcc_64/include/QtCore/QTimer \
 		../../../QT/5.8/gcc_64/include/QtCore/qtimer.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qbasictimer.h \
-		../../../QT/5.8/gcc_64/include/QtCore/QTime \
-		../../../QT/5.8/gcc_64/include/QtCore/qdatetime.h \
 		../../../QT/5.8/gcc_64/include/QtCore/QRectF \
-		Animal.hpp \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/QMediaPlayer \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaplayer.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaobject.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qtmultimediaglobal.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qtmultimedia-config.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmultimedia.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediacontent.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaresource.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qnetworkrequest.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qtnetworkglobal.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qtnetwork-config.h \
+		../../../QT/5.8/gcc_64/include/QtCore/QSharedDataPointer \
 		../../../QT/5.8/gcc_64/include/QtCore/QString \
+		../../../QT/5.8/gcc_64/include/QtCore/QUrl \
+		../../../QT/5.8/gcc_64/include/QtCore/QVariant \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaenumdebug.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qmetaobject.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qaudio.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qnetworkconfiguration.h \
+		Animal.hpp \
 		Statistiques.hpp \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QWidget \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QLabel \
@@ -1377,6 +1396,7 @@ moc_Simulation.cpp: ../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsScene \
 		../../../QT/5.8/gcc_64/include/QtCore/QtCoreDepends \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstractanimation.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstracteventdispatcher.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qeventloop.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstractitemmodel.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstractnativeeventfilter.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstractproxymodel.h \
@@ -1392,7 +1412,9 @@ moc_Simulation.cpp: ../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsScene \
 		../../../QT/5.8/gcc_64/include/QtCore/qcollator.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qcommandlineoption.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qcommandlineparser.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qcoreapplication.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qcryptographichash.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qdatetime.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qdeadlinetimer.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qelapsedtimer.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qdir.h \
@@ -1404,6 +1426,7 @@ moc_Simulation.cpp: ../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsScene \
 		../../../QT/5.8/gcc_64/include/QtCore/qexception.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qfactoryinterface.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qfileselector.h \
+		../../../QT/5.8/gcc_64/include/QtCore/QObject \
 		../../../QT/5.8/gcc_64/include/QtCore/QStringList \
 		../../../QT/5.8/gcc_64/include/QtCore/qfilesystemwatcher.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qfinalstate.h \
@@ -1429,7 +1452,6 @@ moc_Simulation.cpp: ../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsScene \
 		../../../QT/5.8/gcc_64/include/QtCore/qloggingcategory.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmath.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmessageauthenticationcode.h \
-		../../../QT/5.8/gcc_64/include/QtCore/qmetaobject.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmimedata.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmimedatabase.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmimetype.h \
@@ -1468,6 +1490,7 @@ moc_Simulation.cpp: ../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsScene \
 		../../../QT/5.8/gcc_64/include/QtCore/qtemporaryfile.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qtextboundaryfinder.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qtextcodec.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qthread.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qthreadpool.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qthreadstorage.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qtimeline.h \
@@ -1507,6 +1530,8 @@ moc_Simulation.cpp: ../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsScene \
 		../../../QT/5.8/gcc_64/include/QtGui/qgenericmatrix.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qgenericplugin.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qgenericpluginfactory.h \
+		../../../QT/5.8/gcc_64/include/QtGui/qguiapplication.h \
+		../../../QT/5.8/gcc_64/include/QtGui/qinputmethod.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qiconengine.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qiconengineplugin.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qimageiohandler.h \
@@ -1532,7 +1557,6 @@ moc_Simulation.cpp: ../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsScene \
 		../../../QT/5.8/gcc_64/include/QtGui/qopenglframebufferobject.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qopenglpaintdevice.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qopenglpixeltransferoptions.h \
-		../../../QT/5.8/gcc_64/include/QtCore/QSharedDataPointer \
 		../../../QT/5.8/gcc_64/include/QtGui/qopenglshaderprogram.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qopengltexture.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qopengltextureblitter.h \
@@ -1591,6 +1615,7 @@ moc_Simulation.cpp: ../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsScene \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qaccessiblewidget.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qaction.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qactiongroup.h \
+		../../../QT/5.8/gcc_64/include/QtWidgets/qapplication.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qbuttongroup.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qcalendarwidget.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qcheckbox.h \
@@ -1666,7 +1691,7 @@ moc_Simulation.cpp: ../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsScene \
 		../../../QT/5.8/gcc_64/include/QtCore/QPointF \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QScrollerProperties \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qscrollerproperties.h \
-		../../../QT/5.8/gcc_64/include/QtCore/QVariant \
+		../../../QT/5.8/gcc_64/include/QtCore/QMetaType \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qshortcut.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qsizegrip.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qspinbox.h \
@@ -1785,7 +1810,7 @@ moc_Simulation.cpp: ../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsScene \
 		Simulation.hpp \
 		moc_predefs.h \
 		../../../QT/5.8/gcc_64/bin/moc
-	/home/jeremy/CyberDirectory/QT/5.8/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/mkspecs/linux-g++ -I/home/jeremy/CyberDirectory/C++/Qt/Savanna_Simulator -I/home/jeremy/CyberDirectory/C++/Qt/Savanna_Simulator -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtCharts -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtWidgets -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtGui -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtCore -I/usr/include/c++/4.8 -I/usr/include/x86_64-linux-gnu/c++/4.8 -I/usr/include/c++/4.8/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include Simulation.hpp -o moc_Simulation.cpp
+	/home/jeremy/CyberDirectory/QT/5.8/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/mkspecs/linux-g++ -I/home/jeremy/CyberDirectory/C++/Qt/Savanna_Simulator -I/home/jeremy/CyberDirectory/C++/Qt/Savanna_Simulator -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtCharts -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtWidgets -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtMultimedia -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtGui -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtNetwork -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtCore -I/usr/include/c++/4.8 -I/usr/include/x86_64-linux-gnu/c++/4.8 -I/usr/include/c++/4.8/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include Simulation.hpp -o moc_Simulation.cpp
 
 moc_Statistiques.cpp: ../../../QT/5.8/gcc_64/include/QtWidgets/QWidget \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qwidget.h \
@@ -2328,7 +2353,7 @@ moc_Statistiques.cpp: ../../../QT/5.8/gcc_64/include/QtWidgets/QWidget \
 		Statistiques.hpp \
 		moc_predefs.h \
 		../../../QT/5.8/gcc_64/bin/moc
-	/home/jeremy/CyberDirectory/QT/5.8/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/mkspecs/linux-g++ -I/home/jeremy/CyberDirectory/C++/Qt/Savanna_Simulator -I/home/jeremy/CyberDirectory/C++/Qt/Savanna_Simulator -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtCharts -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtWidgets -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtGui -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtCore -I/usr/include/c++/4.8 -I/usr/include/x86_64-linux-gnu/c++/4.8 -I/usr/include/c++/4.8/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include Statistiques.hpp -o moc_Statistiques.cpp
+	/home/jeremy/CyberDirectory/QT/5.8/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/mkspecs/linux-g++ -I/home/jeremy/CyberDirectory/C++/Qt/Savanna_Simulator -I/home/jeremy/CyberDirectory/C++/Qt/Savanna_Simulator -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtCharts -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtWidgets -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtMultimedia -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtGui -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtNetwork -I/home/jeremy/CyberDirectory/QT/5.8/gcc_64/include/QtCore -I/usr/include/c++/4.8 -I/usr/include/x86_64-linux-gnu/c++/4.8 -I/usr/include/c++/4.8/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include Statistiques.hpp -o moc_Statistiques.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -2432,8 +2457,6 @@ Animal.o: Animal.cpp Animal.hpp \
 		../../../QT/5.8/gcc_64/include/QtGui/qpixelformat.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qtransform.h \
 		../../../QT/5.8/gcc_64/include/QtGui/QPixmap \
-		../../../QT/5.8/gcc_64/include/QtCore/QString \
-		../../../QT/5.8/gcc_64/include/QtCore/QDebug \
 		Simulation.hpp \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsScene \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qgraphicsscene.h \
@@ -2458,24 +2481,31 @@ Animal.o: Animal.cpp Animal.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qfiledevice.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qvector2d.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qtouchdevice.h \
-		../../../QT/5.8/gcc_64/include/QtWidgets/QApplication \
-		../../../QT/5.8/gcc_64/include/QtWidgets/qapplication.h \
-		../../../QT/5.8/gcc_64/include/QtCore/qcoreapplication.h \
-		../../../QT/5.8/gcc_64/include/QtCore/qeventloop.h \
-		../../../QT/5.8/gcc_64/include/QtGui/qguiapplication.h \
-		../../../QT/5.8/gcc_64/include/QtGui/qinputmethod.h \
-		../../../QT/5.8/gcc_64/include/QtCore/QObject \
-		../../../QT/5.8/gcc_64/include/QtCore/QThread \
-		../../../QT/5.8/gcc_64/include/QtCore/qthread.h \
+		../../../QT/5.8/gcc_64/include/QtCore/QDebug \
 		../../../QT/5.8/gcc_64/include/QtCore/QVector \
-		../../../QT/5.8/gcc_64/include/QtGui/QList \
-		../../../QT/5.8/gcc_64/include/QtCore/QMetaType \
 		../../../QT/5.8/gcc_64/include/QtCore/QTimer \
 		../../../QT/5.8/gcc_64/include/QtCore/qtimer.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qbasictimer.h \
-		../../../QT/5.8/gcc_64/include/QtCore/QTime \
-		../../../QT/5.8/gcc_64/include/QtCore/qdatetime.h \
 		../../../QT/5.8/gcc_64/include/QtCore/QRectF \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/QMediaPlayer \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaplayer.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaobject.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qtmultimediaglobal.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qtmultimedia-config.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmultimedia.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediacontent.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaresource.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qnetworkrequest.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qtnetworkglobal.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qtnetwork-config.h \
+		../../../QT/5.8/gcc_64/include/QtCore/QSharedDataPointer \
+		../../../QT/5.8/gcc_64/include/QtCore/QString \
+		../../../QT/5.8/gcc_64/include/QtCore/QUrl \
+		../../../QT/5.8/gcc_64/include/QtCore/QVariant \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaenumdebug.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qmetaobject.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qaudio.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qnetworkconfiguration.h \
 		Statistiques.hpp \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QWidget \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QLabel \
@@ -2492,6 +2522,7 @@ Animal.o: Animal.cpp Animal.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/QtCoreDepends \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstractanimation.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstracteventdispatcher.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qeventloop.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstractitemmodel.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstractnativeeventfilter.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstractproxymodel.h \
@@ -2507,7 +2538,9 @@ Animal.o: Animal.cpp Animal.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qcollator.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qcommandlineoption.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qcommandlineparser.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qcoreapplication.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qcryptographichash.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qdatetime.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qdeadlinetimer.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qelapsedtimer.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qdir.h \
@@ -2519,6 +2552,7 @@ Animal.o: Animal.cpp Animal.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qexception.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qfactoryinterface.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qfileselector.h \
+		../../../QT/5.8/gcc_64/include/QtCore/QObject \
 		../../../QT/5.8/gcc_64/include/QtCore/QStringList \
 		../../../QT/5.8/gcc_64/include/QtCore/qfilesystemwatcher.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qfinalstate.h \
@@ -2544,7 +2578,6 @@ Animal.o: Animal.cpp Animal.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qloggingcategory.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmath.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmessageauthenticationcode.h \
-		../../../QT/5.8/gcc_64/include/QtCore/qmetaobject.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmimedata.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmimedatabase.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmimetype.h \
@@ -2583,6 +2616,7 @@ Animal.o: Animal.cpp Animal.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qtemporaryfile.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qtextboundaryfinder.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qtextcodec.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qthread.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qthreadpool.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qthreadstorage.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qtimeline.h \
@@ -2622,6 +2656,8 @@ Animal.o: Animal.cpp Animal.hpp \
 		../../../QT/5.8/gcc_64/include/QtGui/qgenericmatrix.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qgenericplugin.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qgenericpluginfactory.h \
+		../../../QT/5.8/gcc_64/include/QtGui/qguiapplication.h \
+		../../../QT/5.8/gcc_64/include/QtGui/qinputmethod.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qiconengine.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qiconengineplugin.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qimageiohandler.h \
@@ -2647,7 +2683,6 @@ Animal.o: Animal.cpp Animal.hpp \
 		../../../QT/5.8/gcc_64/include/QtGui/qopenglframebufferobject.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qopenglpaintdevice.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qopenglpixeltransferoptions.h \
-		../../../QT/5.8/gcc_64/include/QtCore/QSharedDataPointer \
 		../../../QT/5.8/gcc_64/include/QtGui/qopenglshaderprogram.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qopengltexture.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qopengltextureblitter.h \
@@ -2706,6 +2741,7 @@ Animal.o: Animal.cpp Animal.hpp \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qaccessiblewidget.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qaction.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qactiongroup.h \
+		../../../QT/5.8/gcc_64/include/QtWidgets/qapplication.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qbuttongroup.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qcalendarwidget.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qcheckbox.h \
@@ -2781,7 +2817,7 @@ Animal.o: Animal.cpp Animal.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/QPointF \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QScrollerProperties \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qscrollerproperties.h \
-		../../../QT/5.8/gcc_64/include/QtCore/QVariant \
+		../../../QT/5.8/gcc_64/include/QtCore/QMetaType \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qshortcut.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qsizegrip.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qspinbox.h \
@@ -2988,8 +3024,6 @@ Gazelle.o: Gazelle.cpp Gazelle.hpp \
 		../../../QT/5.8/gcc_64/include/QtGui/qpixelformat.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qtransform.h \
 		../../../QT/5.8/gcc_64/include/QtGui/QPixmap \
-		../../../QT/5.8/gcc_64/include/QtCore/QString \
-		../../../QT/5.8/gcc_64/include/QtCore/QDebug \
 		Simulation.hpp \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsScene \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qgraphicsscene.h \
@@ -3014,24 +3048,31 @@ Gazelle.o: Gazelle.cpp Gazelle.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qfiledevice.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qvector2d.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qtouchdevice.h \
-		../../../QT/5.8/gcc_64/include/QtWidgets/QApplication \
-		../../../QT/5.8/gcc_64/include/QtWidgets/qapplication.h \
-		../../../QT/5.8/gcc_64/include/QtCore/qcoreapplication.h \
-		../../../QT/5.8/gcc_64/include/QtCore/qeventloop.h \
-		../../../QT/5.8/gcc_64/include/QtGui/qguiapplication.h \
-		../../../QT/5.8/gcc_64/include/QtGui/qinputmethod.h \
-		../../../QT/5.8/gcc_64/include/QtCore/QObject \
-		../../../QT/5.8/gcc_64/include/QtCore/QThread \
-		../../../QT/5.8/gcc_64/include/QtCore/qthread.h \
+		../../../QT/5.8/gcc_64/include/QtCore/QDebug \
 		../../../QT/5.8/gcc_64/include/QtCore/QVector \
-		../../../QT/5.8/gcc_64/include/QtGui/QList \
-		../../../QT/5.8/gcc_64/include/QtCore/QMetaType \
 		../../../QT/5.8/gcc_64/include/QtCore/QTimer \
 		../../../QT/5.8/gcc_64/include/QtCore/qtimer.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qbasictimer.h \
-		../../../QT/5.8/gcc_64/include/QtCore/QTime \
-		../../../QT/5.8/gcc_64/include/QtCore/qdatetime.h \
 		../../../QT/5.8/gcc_64/include/QtCore/QRectF \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/QMediaPlayer \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaplayer.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaobject.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qtmultimediaglobal.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qtmultimedia-config.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmultimedia.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediacontent.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaresource.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qnetworkrequest.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qtnetworkglobal.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qtnetwork-config.h \
+		../../../QT/5.8/gcc_64/include/QtCore/QSharedDataPointer \
+		../../../QT/5.8/gcc_64/include/QtCore/QString \
+		../../../QT/5.8/gcc_64/include/QtCore/QUrl \
+		../../../QT/5.8/gcc_64/include/QtCore/QVariant \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaenumdebug.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qmetaobject.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qaudio.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qnetworkconfiguration.h \
 		Statistiques.hpp \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QWidget \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QLabel \
@@ -3048,6 +3089,7 @@ Gazelle.o: Gazelle.cpp Gazelle.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/QtCoreDepends \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstractanimation.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstracteventdispatcher.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qeventloop.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstractitemmodel.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstractnativeeventfilter.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstractproxymodel.h \
@@ -3063,7 +3105,9 @@ Gazelle.o: Gazelle.cpp Gazelle.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qcollator.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qcommandlineoption.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qcommandlineparser.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qcoreapplication.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qcryptographichash.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qdatetime.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qdeadlinetimer.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qelapsedtimer.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qdir.h \
@@ -3075,6 +3119,7 @@ Gazelle.o: Gazelle.cpp Gazelle.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qexception.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qfactoryinterface.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qfileselector.h \
+		../../../QT/5.8/gcc_64/include/QtCore/QObject \
 		../../../QT/5.8/gcc_64/include/QtCore/QStringList \
 		../../../QT/5.8/gcc_64/include/QtCore/qfilesystemwatcher.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qfinalstate.h \
@@ -3100,7 +3145,6 @@ Gazelle.o: Gazelle.cpp Gazelle.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qloggingcategory.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmath.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmessageauthenticationcode.h \
-		../../../QT/5.8/gcc_64/include/QtCore/qmetaobject.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmimedata.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmimedatabase.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmimetype.h \
@@ -3139,6 +3183,7 @@ Gazelle.o: Gazelle.cpp Gazelle.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qtemporaryfile.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qtextboundaryfinder.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qtextcodec.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qthread.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qthreadpool.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qthreadstorage.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qtimeline.h \
@@ -3178,6 +3223,8 @@ Gazelle.o: Gazelle.cpp Gazelle.hpp \
 		../../../QT/5.8/gcc_64/include/QtGui/qgenericmatrix.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qgenericplugin.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qgenericpluginfactory.h \
+		../../../QT/5.8/gcc_64/include/QtGui/qguiapplication.h \
+		../../../QT/5.8/gcc_64/include/QtGui/qinputmethod.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qiconengine.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qiconengineplugin.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qimageiohandler.h \
@@ -3203,7 +3250,6 @@ Gazelle.o: Gazelle.cpp Gazelle.hpp \
 		../../../QT/5.8/gcc_64/include/QtGui/qopenglframebufferobject.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qopenglpaintdevice.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qopenglpixeltransferoptions.h \
-		../../../QT/5.8/gcc_64/include/QtCore/QSharedDataPointer \
 		../../../QT/5.8/gcc_64/include/QtGui/qopenglshaderprogram.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qopengltexture.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qopengltextureblitter.h \
@@ -3262,6 +3308,7 @@ Gazelle.o: Gazelle.cpp Gazelle.hpp \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qaccessiblewidget.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qaction.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qactiongroup.h \
+		../../../QT/5.8/gcc_64/include/QtWidgets/qapplication.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qbuttongroup.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qcalendarwidget.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qcheckbox.h \
@@ -3337,7 +3384,7 @@ Gazelle.o: Gazelle.cpp Gazelle.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/QPointF \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QScrollerProperties \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qscrollerproperties.h \
-		../../../QT/5.8/gcc_64/include/QtCore/QVariant \
+		../../../QT/5.8/gcc_64/include/QtCore/QMetaType \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qshortcut.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qsizegrip.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qspinbox.h \
@@ -3544,8 +3591,6 @@ Lion.o: Lion.cpp Lion.hpp \
 		../../../QT/5.8/gcc_64/include/QtGui/qpixelformat.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qtransform.h \
 		../../../QT/5.8/gcc_64/include/QtGui/QPixmap \
-		../../../QT/5.8/gcc_64/include/QtCore/QString \
-		../../../QT/5.8/gcc_64/include/QtCore/QDebug \
 		Simulation.hpp \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsScene \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qgraphicsscene.h \
@@ -3570,24 +3615,31 @@ Lion.o: Lion.cpp Lion.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qfiledevice.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qvector2d.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qtouchdevice.h \
-		../../../QT/5.8/gcc_64/include/QtWidgets/QApplication \
-		../../../QT/5.8/gcc_64/include/QtWidgets/qapplication.h \
-		../../../QT/5.8/gcc_64/include/QtCore/qcoreapplication.h \
-		../../../QT/5.8/gcc_64/include/QtCore/qeventloop.h \
-		../../../QT/5.8/gcc_64/include/QtGui/qguiapplication.h \
-		../../../QT/5.8/gcc_64/include/QtGui/qinputmethod.h \
-		../../../QT/5.8/gcc_64/include/QtCore/QObject \
-		../../../QT/5.8/gcc_64/include/QtCore/QThread \
-		../../../QT/5.8/gcc_64/include/QtCore/qthread.h \
+		../../../QT/5.8/gcc_64/include/QtCore/QDebug \
 		../../../QT/5.8/gcc_64/include/QtCore/QVector \
-		../../../QT/5.8/gcc_64/include/QtGui/QList \
-		../../../QT/5.8/gcc_64/include/QtCore/QMetaType \
 		../../../QT/5.8/gcc_64/include/QtCore/QTimer \
 		../../../QT/5.8/gcc_64/include/QtCore/qtimer.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qbasictimer.h \
-		../../../QT/5.8/gcc_64/include/QtCore/QTime \
-		../../../QT/5.8/gcc_64/include/QtCore/qdatetime.h \
 		../../../QT/5.8/gcc_64/include/QtCore/QRectF \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/QMediaPlayer \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaplayer.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaobject.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qtmultimediaglobal.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qtmultimedia-config.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmultimedia.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediacontent.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaresource.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qnetworkrequest.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qtnetworkglobal.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qtnetwork-config.h \
+		../../../QT/5.8/gcc_64/include/QtCore/QSharedDataPointer \
+		../../../QT/5.8/gcc_64/include/QtCore/QString \
+		../../../QT/5.8/gcc_64/include/QtCore/QUrl \
+		../../../QT/5.8/gcc_64/include/QtCore/QVariant \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaenumdebug.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qmetaobject.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qaudio.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qnetworkconfiguration.h \
 		Statistiques.hpp \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QWidget \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QLabel \
@@ -3604,6 +3656,7 @@ Lion.o: Lion.cpp Lion.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/QtCoreDepends \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstractanimation.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstracteventdispatcher.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qeventloop.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstractitemmodel.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstractnativeeventfilter.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstractproxymodel.h \
@@ -3619,7 +3672,9 @@ Lion.o: Lion.cpp Lion.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qcollator.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qcommandlineoption.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qcommandlineparser.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qcoreapplication.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qcryptographichash.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qdatetime.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qdeadlinetimer.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qelapsedtimer.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qdir.h \
@@ -3631,6 +3686,7 @@ Lion.o: Lion.cpp Lion.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qexception.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qfactoryinterface.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qfileselector.h \
+		../../../QT/5.8/gcc_64/include/QtCore/QObject \
 		../../../QT/5.8/gcc_64/include/QtCore/QStringList \
 		../../../QT/5.8/gcc_64/include/QtCore/qfilesystemwatcher.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qfinalstate.h \
@@ -3656,7 +3712,6 @@ Lion.o: Lion.cpp Lion.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qloggingcategory.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmath.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmessageauthenticationcode.h \
-		../../../QT/5.8/gcc_64/include/QtCore/qmetaobject.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmimedata.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmimedatabase.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmimetype.h \
@@ -3695,6 +3750,7 @@ Lion.o: Lion.cpp Lion.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qtemporaryfile.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qtextboundaryfinder.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qtextcodec.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qthread.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qthreadpool.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qthreadstorage.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qtimeline.h \
@@ -3734,6 +3790,8 @@ Lion.o: Lion.cpp Lion.hpp \
 		../../../QT/5.8/gcc_64/include/QtGui/qgenericmatrix.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qgenericplugin.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qgenericpluginfactory.h \
+		../../../QT/5.8/gcc_64/include/QtGui/qguiapplication.h \
+		../../../QT/5.8/gcc_64/include/QtGui/qinputmethod.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qiconengine.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qiconengineplugin.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qimageiohandler.h \
@@ -3759,7 +3817,6 @@ Lion.o: Lion.cpp Lion.hpp \
 		../../../QT/5.8/gcc_64/include/QtGui/qopenglframebufferobject.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qopenglpaintdevice.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qopenglpixeltransferoptions.h \
-		../../../QT/5.8/gcc_64/include/QtCore/QSharedDataPointer \
 		../../../QT/5.8/gcc_64/include/QtGui/qopenglshaderprogram.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qopengltexture.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qopengltextureblitter.h \
@@ -3818,6 +3875,7 @@ Lion.o: Lion.cpp Lion.hpp \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qaccessiblewidget.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qaction.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qactiongroup.h \
+		../../../QT/5.8/gcc_64/include/QtWidgets/qapplication.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qbuttongroup.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qcalendarwidget.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qcheckbox.h \
@@ -3893,7 +3951,7 @@ Lion.o: Lion.cpp Lion.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/QPointF \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QScrollerProperties \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qscrollerproperties.h \
-		../../../QT/5.8/gcc_64/include/QtCore/QVariant \
+		../../../QT/5.8/gcc_64/include/QtCore/QMetaType \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qshortcut.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qsizegrip.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qspinbox.h \
@@ -4461,33 +4519,44 @@ Mainwindow.o: Mainwindow.cpp Mainwindow.hpp \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qtwidgetsversion.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QMainWindow \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QVBoxLayout \
-		../../../QT/5.8/gcc_64/include/QtWidgets/QHBoxLayout \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QBoxLayout \
-		../../../QT/5.8/gcc_64/include/QtWidgets/QMenu \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QGroupBox \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QPushButton \
-		../../../QT/5.8/gcc_64/include/QtWidgets/QMenuBar \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsView \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QSlider \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QCheckBox \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QLabel \
+		../../../QT/5.8/gcc_64/include/QtGui/QFont \
+		../../../QT/5.8/gcc_64/include/QtWidgets/QTextEdit \
 		Simulation.hpp \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsScene \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsRectItem \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsPixmapItem \
 		../../../QT/5.8/gcc_64/include/QtGui/QPixmap \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QDesktopWidget \
-		../../../QT/5.8/gcc_64/include/QtWidgets/QApplication \
-		../../../QT/5.8/gcc_64/include/QtCore/QThread \
 		../../../QT/5.8/gcc_64/include/QtCore/QDebug \
 		../../../QT/5.8/gcc_64/include/QtCore/QVector \
-		../../../QT/5.8/gcc_64/include/QtGui/QList \
 		../../../QT/5.8/gcc_64/include/QtCore/QTimer \
-		../../../QT/5.8/gcc_64/include/QtCore/QTime \
 		../../../QT/5.8/gcc_64/include/QtCore/QRectF \
-		Animal.hpp \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/QMediaPlayer \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaplayer.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaobject.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qtmultimediaglobal.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qtmultimedia-config.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmultimedia.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediacontent.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaresource.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qnetworkrequest.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qtnetworkglobal.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qtnetwork-config.h \
 		../../../QT/5.8/gcc_64/include/QtCore/QString \
+		../../../QT/5.8/gcc_64/include/QtCore/QUrl \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaenumdebug.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qaudio.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qnetworkconfiguration.h \
+		Animal.hpp \
 		Statistiques.hpp \
+		../../../QT/5.8/gcc_64/include/QtWidgets/QHBoxLayout \
 		../../../QT/5.8/gcc_64/include/QtCharts/QtCharts \
 		../../../QT/5.8/gcc_64/include/QtCharts/QtChartsDepends \
 		../../../QT/5.8/gcc_64/include/QtCharts/qchartglobal.h \
@@ -4496,7 +4565,6 @@ Mainwindow.o: Mainwindow.cpp Mainwindow.hpp \
 		../../../QT/5.8/gcc_64/include/QtCharts/qabstractaxis.h \
 		../../../QT/5.8/gcc_64/include/QtCharts/QChartGlobal \
 		../../../QT/5.8/gcc_64/include/QtGui/QPen \
-		../../../QT/5.8/gcc_64/include/QtGui/QFont \
 		../../../QT/5.8/gcc_64/include/QtCharts/qabstractbarseries.h \
 		../../../QT/5.8/gcc_64/include/QtCharts/QAbstractSeries \
 		../../../QT/5.8/gcc_64/include/QtCharts/qabstractseries.h \
@@ -5024,33 +5092,44 @@ QtMain.o: QtMain.cpp Mainwindow.hpp \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qtwidgetsversion.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QMainWindow \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QVBoxLayout \
-		../../../QT/5.8/gcc_64/include/QtWidgets/QHBoxLayout \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QBoxLayout \
-		../../../QT/5.8/gcc_64/include/QtWidgets/QMenu \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QGroupBox \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QPushButton \
-		../../../QT/5.8/gcc_64/include/QtWidgets/QMenuBar \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsView \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QSlider \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QCheckBox \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QLabel \
+		../../../QT/5.8/gcc_64/include/QtGui/QFont \
+		../../../QT/5.8/gcc_64/include/QtWidgets/QTextEdit \
 		Simulation.hpp \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsScene \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsRectItem \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsPixmapItem \
 		../../../QT/5.8/gcc_64/include/QtGui/QPixmap \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QDesktopWidget \
-		../../../QT/5.8/gcc_64/include/QtWidgets/QApplication \
-		../../../QT/5.8/gcc_64/include/QtCore/QThread \
 		../../../QT/5.8/gcc_64/include/QtCore/QDebug \
 		../../../QT/5.8/gcc_64/include/QtCore/QVector \
-		../../../QT/5.8/gcc_64/include/QtGui/QList \
 		../../../QT/5.8/gcc_64/include/QtCore/QTimer \
-		../../../QT/5.8/gcc_64/include/QtCore/QTime \
 		../../../QT/5.8/gcc_64/include/QtCore/QRectF \
-		Animal.hpp \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/QMediaPlayer \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaplayer.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaobject.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qtmultimediaglobal.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qtmultimedia-config.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmultimedia.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediacontent.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaresource.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qnetworkrequest.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qtnetworkglobal.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qtnetwork-config.h \
 		../../../QT/5.8/gcc_64/include/QtCore/QString \
+		../../../QT/5.8/gcc_64/include/QtCore/QUrl \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaenumdebug.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qaudio.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qnetworkconfiguration.h \
+		Animal.hpp \
 		Statistiques.hpp \
+		../../../QT/5.8/gcc_64/include/QtWidgets/QHBoxLayout \
 		../../../QT/5.8/gcc_64/include/QtCharts/QtCharts \
 		../../../QT/5.8/gcc_64/include/QtCharts/QtChartsDepends \
 		../../../QT/5.8/gcc_64/include/QtCharts/qchartglobal.h \
@@ -5059,7 +5138,6 @@ QtMain.o: QtMain.cpp Mainwindow.hpp \
 		../../../QT/5.8/gcc_64/include/QtCharts/qabstractaxis.h \
 		../../../QT/5.8/gcc_64/include/QtCharts/QChartGlobal \
 		../../../QT/5.8/gcc_64/include/QtGui/QPen \
-		../../../QT/5.8/gcc_64/include/QtGui/QFont \
 		../../../QT/5.8/gcc_64/include/QtCharts/qabstractbarseries.h \
 		../../../QT/5.8/gcc_64/include/QtCharts/QAbstractSeries \
 		../../../QT/5.8/gcc_64/include/QtCharts/qabstractseries.h \
@@ -5134,7 +5212,8 @@ QtMain.o: QtMain.cpp Mainwindow.hpp \
 		../../../QT/5.8/gcc_64/include/QtCharts/qvxymodelmapper.h \
 		../../../QT/5.8/gcc_64/include/QtCharts/qxylegendmarker.h \
 		../../../QT/5.8/gcc_64/include/QtCharts/qtchartsversion.h \
-		../../../QT/5.8/gcc_64/include/QtCharts/QChartView
+		../../../QT/5.8/gcc_64/include/QtCharts/QChartView \
+		../../../QT/5.8/gcc_64/include/QtWidgets/QApplication
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o QtMain.o QtMain.cpp
 
 Simulation.o: Simulation.cpp Simulation.hpp \
@@ -5248,27 +5327,32 @@ Simulation.o: Simulation.cpp Simulation.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qfiledevice.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qvector2d.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qtouchdevice.h \
-		../../../QT/5.8/gcc_64/include/QtWidgets/QApplication \
-		../../../QT/5.8/gcc_64/include/QtWidgets/qapplication.h \
-		../../../QT/5.8/gcc_64/include/QtCore/qcoreapplication.h \
-		../../../QT/5.8/gcc_64/include/QtCore/qeventloop.h \
-		../../../QT/5.8/gcc_64/include/QtGui/qguiapplication.h \
-		../../../QT/5.8/gcc_64/include/QtGui/qinputmethod.h \
-		../../../QT/5.8/gcc_64/include/QtCore/QObject \
-		../../../QT/5.8/gcc_64/include/QtCore/QThread \
-		../../../QT/5.8/gcc_64/include/QtCore/qthread.h \
 		../../../QT/5.8/gcc_64/include/QtCore/QDebug \
 		../../../QT/5.8/gcc_64/include/QtCore/QVector \
-		../../../QT/5.8/gcc_64/include/QtGui/QList \
-		../../../QT/5.8/gcc_64/include/QtCore/QMetaType \
 		../../../QT/5.8/gcc_64/include/QtCore/QTimer \
 		../../../QT/5.8/gcc_64/include/QtCore/qtimer.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qbasictimer.h \
-		../../../QT/5.8/gcc_64/include/QtCore/QTime \
-		../../../QT/5.8/gcc_64/include/QtCore/qdatetime.h \
 		../../../QT/5.8/gcc_64/include/QtCore/QRectF \
-		Animal.hpp \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/QMediaPlayer \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaplayer.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaobject.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qtmultimediaglobal.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qtmultimedia-config.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmultimedia.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediacontent.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaresource.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qnetworkrequest.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qtnetworkglobal.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qtnetwork-config.h \
+		../../../QT/5.8/gcc_64/include/QtCore/QSharedDataPointer \
 		../../../QT/5.8/gcc_64/include/QtCore/QString \
+		../../../QT/5.8/gcc_64/include/QtCore/QUrl \
+		../../../QT/5.8/gcc_64/include/QtCore/QVariant \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaenumdebug.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qmetaobject.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qaudio.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qnetworkconfiguration.h \
+		Animal.hpp \
 		Statistiques.hpp \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QWidget \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QLabel \
@@ -5285,6 +5369,7 @@ Simulation.o: Simulation.cpp Simulation.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/QtCoreDepends \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstractanimation.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstracteventdispatcher.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qeventloop.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstractitemmodel.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstractnativeeventfilter.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstractproxymodel.h \
@@ -5300,7 +5385,9 @@ Simulation.o: Simulation.cpp Simulation.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qcollator.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qcommandlineoption.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qcommandlineparser.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qcoreapplication.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qcryptographichash.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qdatetime.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qdeadlinetimer.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qelapsedtimer.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qdir.h \
@@ -5312,6 +5399,7 @@ Simulation.o: Simulation.cpp Simulation.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qexception.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qfactoryinterface.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qfileselector.h \
+		../../../QT/5.8/gcc_64/include/QtCore/QObject \
 		../../../QT/5.8/gcc_64/include/QtCore/QStringList \
 		../../../QT/5.8/gcc_64/include/QtCore/qfilesystemwatcher.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qfinalstate.h \
@@ -5337,7 +5425,6 @@ Simulation.o: Simulation.cpp Simulation.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qloggingcategory.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmath.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmessageauthenticationcode.h \
-		../../../QT/5.8/gcc_64/include/QtCore/qmetaobject.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmimedata.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmimedatabase.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmimetype.h \
@@ -5376,6 +5463,7 @@ Simulation.o: Simulation.cpp Simulation.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qtemporaryfile.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qtextboundaryfinder.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qtextcodec.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qthread.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qthreadpool.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qthreadstorage.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qtimeline.h \
@@ -5415,6 +5503,8 @@ Simulation.o: Simulation.cpp Simulation.hpp \
 		../../../QT/5.8/gcc_64/include/QtGui/qgenericmatrix.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qgenericplugin.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qgenericpluginfactory.h \
+		../../../QT/5.8/gcc_64/include/QtGui/qguiapplication.h \
+		../../../QT/5.8/gcc_64/include/QtGui/qinputmethod.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qiconengine.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qiconengineplugin.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qimageiohandler.h \
@@ -5440,7 +5530,6 @@ Simulation.o: Simulation.cpp Simulation.hpp \
 		../../../QT/5.8/gcc_64/include/QtGui/qopenglframebufferobject.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qopenglpaintdevice.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qopenglpixeltransferoptions.h \
-		../../../QT/5.8/gcc_64/include/QtCore/QSharedDataPointer \
 		../../../QT/5.8/gcc_64/include/QtGui/qopenglshaderprogram.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qopengltexture.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qopengltextureblitter.h \
@@ -5499,6 +5588,7 @@ Simulation.o: Simulation.cpp Simulation.hpp \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qaccessiblewidget.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qaction.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qactiongroup.h \
+		../../../QT/5.8/gcc_64/include/QtWidgets/qapplication.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qbuttongroup.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qcalendarwidget.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qcheckbox.h \
@@ -5574,7 +5664,7 @@ Simulation.o: Simulation.cpp Simulation.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/QPointF \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QScrollerProperties \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qscrollerproperties.h \
-		../../../QT/5.8/gcc_64/include/QtCore/QVariant \
+		../../../QT/5.8/gcc_64/include/QtCore/QMetaType \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qshortcut.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qsizegrip.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qspinbox.h \
@@ -6325,8 +6415,6 @@ Vegetal.o: Vegetal.cpp Vegetal.hpp \
 		../../../QT/5.8/gcc_64/include/QtGui/qpixelformat.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qtransform.h \
 		../../../QT/5.8/gcc_64/include/QtGui/QPixmap \
-		../../../QT/5.8/gcc_64/include/QtCore/QString \
-		../../../QT/5.8/gcc_64/include/QtCore/QDebug \
 		Simulation.hpp \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QGraphicsScene \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qgraphicsscene.h \
@@ -6351,24 +6439,31 @@ Vegetal.o: Vegetal.cpp Vegetal.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qfiledevice.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qvector2d.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qtouchdevice.h \
-		../../../QT/5.8/gcc_64/include/QtWidgets/QApplication \
-		../../../QT/5.8/gcc_64/include/QtWidgets/qapplication.h \
-		../../../QT/5.8/gcc_64/include/QtCore/qcoreapplication.h \
-		../../../QT/5.8/gcc_64/include/QtCore/qeventloop.h \
-		../../../QT/5.8/gcc_64/include/QtGui/qguiapplication.h \
-		../../../QT/5.8/gcc_64/include/QtGui/qinputmethod.h \
-		../../../QT/5.8/gcc_64/include/QtCore/QObject \
-		../../../QT/5.8/gcc_64/include/QtCore/QThread \
-		../../../QT/5.8/gcc_64/include/QtCore/qthread.h \
+		../../../QT/5.8/gcc_64/include/QtCore/QDebug \
 		../../../QT/5.8/gcc_64/include/QtCore/QVector \
-		../../../QT/5.8/gcc_64/include/QtGui/QList \
-		../../../QT/5.8/gcc_64/include/QtCore/QMetaType \
 		../../../QT/5.8/gcc_64/include/QtCore/QTimer \
 		../../../QT/5.8/gcc_64/include/QtCore/qtimer.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qbasictimer.h \
-		../../../QT/5.8/gcc_64/include/QtCore/QTime \
-		../../../QT/5.8/gcc_64/include/QtCore/qdatetime.h \
 		../../../QT/5.8/gcc_64/include/QtCore/QRectF \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/QMediaPlayer \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaplayer.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaobject.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qtmultimediaglobal.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qtmultimedia-config.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmultimedia.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediacontent.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaresource.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qnetworkrequest.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qtnetworkglobal.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qtnetwork-config.h \
+		../../../QT/5.8/gcc_64/include/QtCore/QSharedDataPointer \
+		../../../QT/5.8/gcc_64/include/QtCore/QString \
+		../../../QT/5.8/gcc_64/include/QtCore/QUrl \
+		../../../QT/5.8/gcc_64/include/QtCore/QVariant \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qmediaenumdebug.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qmetaobject.h \
+		../../../QT/5.8/gcc_64/include/QtMultimedia/qaudio.h \
+		../../../QT/5.8/gcc_64/include/QtNetwork/qnetworkconfiguration.h \
 		Statistiques.hpp \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QWidget \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QLabel \
@@ -6385,6 +6480,7 @@ Vegetal.o: Vegetal.cpp Vegetal.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/QtCoreDepends \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstractanimation.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstracteventdispatcher.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qeventloop.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstractitemmodel.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstractnativeeventfilter.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qabstractproxymodel.h \
@@ -6400,7 +6496,9 @@ Vegetal.o: Vegetal.cpp Vegetal.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qcollator.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qcommandlineoption.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qcommandlineparser.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qcoreapplication.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qcryptographichash.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qdatetime.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qdeadlinetimer.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qelapsedtimer.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qdir.h \
@@ -6412,6 +6510,7 @@ Vegetal.o: Vegetal.cpp Vegetal.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qexception.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qfactoryinterface.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qfileselector.h \
+		../../../QT/5.8/gcc_64/include/QtCore/QObject \
 		../../../QT/5.8/gcc_64/include/QtCore/QStringList \
 		../../../QT/5.8/gcc_64/include/QtCore/qfilesystemwatcher.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qfinalstate.h \
@@ -6437,7 +6536,6 @@ Vegetal.o: Vegetal.cpp Vegetal.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qloggingcategory.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmath.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmessageauthenticationcode.h \
-		../../../QT/5.8/gcc_64/include/QtCore/qmetaobject.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmimedata.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmimedatabase.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qmimetype.h \
@@ -6476,6 +6574,7 @@ Vegetal.o: Vegetal.cpp Vegetal.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/qtemporaryfile.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qtextboundaryfinder.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qtextcodec.h \
+		../../../QT/5.8/gcc_64/include/QtCore/qthread.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qthreadpool.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qthreadstorage.h \
 		../../../QT/5.8/gcc_64/include/QtCore/qtimeline.h \
@@ -6515,6 +6614,8 @@ Vegetal.o: Vegetal.cpp Vegetal.hpp \
 		../../../QT/5.8/gcc_64/include/QtGui/qgenericmatrix.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qgenericplugin.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qgenericpluginfactory.h \
+		../../../QT/5.8/gcc_64/include/QtGui/qguiapplication.h \
+		../../../QT/5.8/gcc_64/include/QtGui/qinputmethod.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qiconengine.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qiconengineplugin.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qimageiohandler.h \
@@ -6540,7 +6641,6 @@ Vegetal.o: Vegetal.cpp Vegetal.hpp \
 		../../../QT/5.8/gcc_64/include/QtGui/qopenglframebufferobject.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qopenglpaintdevice.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qopenglpixeltransferoptions.h \
-		../../../QT/5.8/gcc_64/include/QtCore/QSharedDataPointer \
 		../../../QT/5.8/gcc_64/include/QtGui/qopenglshaderprogram.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qopengltexture.h \
 		../../../QT/5.8/gcc_64/include/QtGui/qopengltextureblitter.h \
@@ -6599,6 +6699,7 @@ Vegetal.o: Vegetal.cpp Vegetal.hpp \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qaccessiblewidget.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qaction.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qactiongroup.h \
+		../../../QT/5.8/gcc_64/include/QtWidgets/qapplication.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qbuttongroup.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qcalendarwidget.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qcheckbox.h \
@@ -6674,7 +6775,7 @@ Vegetal.o: Vegetal.cpp Vegetal.hpp \
 		../../../QT/5.8/gcc_64/include/QtCore/QPointF \
 		../../../QT/5.8/gcc_64/include/QtWidgets/QScrollerProperties \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qscrollerproperties.h \
-		../../../QT/5.8/gcc_64/include/QtCore/QVariant \
+		../../../QT/5.8/gcc_64/include/QtCore/QMetaType \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qshortcut.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qsizegrip.h \
 		../../../QT/5.8/gcc_64/include/QtWidgets/qspinbox.h \
