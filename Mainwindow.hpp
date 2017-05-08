@@ -1,18 +1,21 @@
+// -------------------------------------------------------------------------------------------- //
+// ----- Fichier      : MainWindow.hpp                                                    ----- //
+// ----- Type         : header                                                            ----- //
+// ----- Auteur       : Jérémy                                                            ----- //
+// ----- Description  : Permet de crée une fenêtre graphique                              ----- //
+// -------------------------------------------------------------------------------------------- //
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QtWidgets>
 #include <QMainWindow>
-#include <QVBoxLayout>
-#include <QBoxLayout>
+#include <QLayout>
+#include <QGraphicsView>
 #include <QGroupBox>
 #include <QPushButton>
-#include <QGraphicsView>
 #include <QSlider>
 #include <QCheckBox>
 #include <QLabel>
-#include <QFont>
-#include <QTextEdit>
 
 #include "Simulation.hpp"
 #include "Statistiques.hpp"
@@ -20,9 +23,11 @@
 class MainWindow : public QMainWindow {
   Q_OBJECT
   public:
+    // Constructeur et Destructeur
     MainWindow(QWidget *parent = 0);
     ~MainWindow(){};
 
+    // Méthodes
     QGroupBox *BuildGroupBoxControle();
     void setValueSlider(int value, int i);
 
@@ -32,16 +37,19 @@ class MainWindow : public QMainWindow {
     void slot_configuration();
 
   private:
-    QWidget *widget_general;
-    QGraphicsView *myview;
+    QWidget *widget_general; // widget principal
+    QGraphicsView *myview; // vue de la simulation
 
+    // ----- Layouts ---------------------------------------------------------------------------- //
     QGroupBox *group_box;
     QBoxLayout *box_layout;
     QVBoxLayout *simu_controle1;
     QVBoxLayout *simu_controle2;
     QVBoxLayout *simu_controle3;
     QVBoxLayout *box_control;
+    // ------------------------------------------------------------------------------------------ //
 
+    // ----- Création des contôles et de leurs labels respectifs -------------------------------- //
     QLabel *nb_animaux_label;
     QSlider *nb_animaux_simu;
     QLabel *proportion_label;
@@ -64,9 +72,10 @@ class MainWindow : public QMainWindow {
     QPushButton *quitter;
 
     QLabel *signature;
+    // ------------------------------------------------------------------------------------------ //
 
-    Statistiques *statistiquesWindow;
-    Simulation *simulation;
+    Statistiques *statistiquesWindow; // Fenêtre de stats
+    Simulation *simulation; // Simulation
 };
 
 #endif

@@ -1,8 +1,15 @@
+// -------------------------------------------------------------------------------------------- //
+// ----- Fichier      : Simulation.cpp                                                    ----- //
+// ----- Type         : source                                                            ----- //
+// ----- Auteur       : Jérémy                                                            ----- //
+// ----- Description  : Permet de crée la simulation                                      ----- //
+// -------------------------------------------------------------------------------------------- //
 #include "Simulation.hpp"
 #include "Gazelle.hpp"
 #include "Lion.hpp"
 #include "Vegetal.hpp"
 
+// Constructeur
 Simulation::Simulation(Statistiques* stats, QObject *parent) : QGraphicsScene(parent) {
   // Fenêtre de statistiques à laquelle on envoie toutes les données
   statsWindow = stats;
@@ -36,9 +43,11 @@ Simulation::Simulation(Statistiques* stats, QObject *parent) : QGraphicsScene(pa
   // Connexion entre la simulation et la fenêtre de statistiques
   connect(this, SIGNAL(signal_valeurs(int, int, int, int, int)), statsWindow, SLOT(slot_resultat_valeur(int, int, int, int, int)));
 
+  // ------ Création de la musique -------------------------------------------------------------- //
   musique = new QSound("Le_Roi_Lion_-_L_histoire_de_la_vie.wav", this);
   musique->setLoops(QSound::Infinite);
   musique->play();
+  // -------------------------------------------------------------------------------------------- //
 }
 
 // ---------------------------------------------------------------------------------------------- //
@@ -118,9 +127,7 @@ void Simulation::terminer() {
   }
 
   // Effacement totale du vecteur d'animaux
-  qDebug() << "Taille du vecteur avant clear" << vect_animaux.size();
   vect_animaux.clear();
-  qDebug() << "Taille du vecteur apres clear" << vect_animaux.size();
 
   // Réinitialisation des données
   animaux_mort = 0;
@@ -298,12 +305,19 @@ int Simulation::plus_proche(int a) {
   return sens;
 }
 
-// Fonction
+// Fonction qui choisi le meilleur sens pour le déplacemen intelligent
 int Simulation::deplacement_intelligent(int a1, int a2) {
-  int sens = -1;
+  int sens = -1; // -1 : aléatoire
+
+  // Si a2 vaut moins il n'y a aucun déplacement intelligent à faire
+  // Exemple : plus aucune gazelle
   if (a2 != -1) {
+    // Il a 2 directions possibles pour se déplacer vers un point
+    // On en choisi un aléatoirement
     if(rand()%2 == 0) {
+      // Choix du meilleur sens en fonction des positions des 2 animaux
       if (vect_animaux[a1]->x() > vect_animaux[a2]->x()) {
+        // Si a1 : gazelle et a2 : lion, alors on éloigne la gazelle
         if(vect_animaux[a2]->getID() == 'L') sens = 1;
         sens = 0;
       } else if (vect_animaux[a1]->x() < vect_animaux[a2]->x()) {
@@ -321,6 +335,7 @@ int Simulation::deplacement_intelligent(int a1, int a2) {
     }
   }
 
+  // On retourne le sens
   return sens;
 }
 

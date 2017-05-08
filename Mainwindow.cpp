@@ -1,5 +1,12 @@
+// -------------------------------------------------------------------------------------------- //
+// ----- Fichier      : MainWindow.cpp                                                    ----- //
+// ----- Type         : source                                                            ----- //
+// ----- Auteur       : Jérémy                                                            ----- //
+// ----- Description  : Permet de crée une fenêtre graphique                              ----- //
+// -------------------------------------------------------------------------------------------- //
 #include "Mainwindow.hpp"
 
+// Constructeur
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   this->setWindowTitle("Savanna Simulator"); // Nom de la fenêtre
 
@@ -24,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   qbl_general->addWidget(myview);
 }
 
+// Création du groupe box de contrôle
 QGroupBox *MainWindow::BuildGroupBoxControle() {
   // Groupe Box contenant tous les contôles
   // VOIR SCHEMA DETAILLE
@@ -216,27 +224,50 @@ void MainWindow::slot_statistiques() {
   }
 }
 
+// ---------------------------------------------------------------------------------------------- //
+// ------ SLOT : Ouvre une petite fenêtre qui demande le fichier de config ---------------------- //
+// ---------------------------------------------------------------------------------------------- //
 void MainWindow::slot_configuration() {
+  // Variables utilisées
   QString file, texte;
+  int compteur = 0;
 
+  // Ouverture d'une petite fenêtre qui demande le nom du fichier
   file = QInputDialog::getText(NULL,"Fichier","Choississez un fichier de configuration !");
 
-  QFile fichier(file + ".txt");
+  // On crée un QFile avec le nom du fichier et on lui ajout ".conf"
+  QFile fichier(file + ".conf");
+  // Si on réussi à ouvrir le fichier en lecture seulement
   if(fichier.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    // Création d'un flux permet de parcourir le fichier
     QTextStream flux(&fichier);
-    for (int i = 0; i < 6; i++) {
+    // Pour chaque ligne (21 nombres de ligne dans les fichiers de configuration)
+    for (int i = 0; i < 21; i++) {
+      // On lit la ligne
       texte = flux.readLine();
 
-      bool ok;
-      int value = texte.toInt(&ok, 10);
-      setValueSlider(value, i);
+      // Si la ligne commence par un #
+      // On ne fait rien c'est un commentaire
+      if (!texte.startsWith("#")) {
+        // Récuperation de la valeur
+        // On la convertie en entier
+        bool ok;
+        int value = texte.toInt(&ok, 10);
+        // On appel la fonction qui met à jour les sliders
+        setValueSlider(value, compteur);
+        // Ce compteur permet de savoir quel valeur on modifie
+        compteur++;
+      }
     }
   }
 
+  // On ferme le fichier
   fichier.close();
 }
 
+// Fonction qui met à jour les sliders en fonction d'un fichier .conf
 void MainWindow::setValueSlider(int value, int i) {
+  // Argument la valeur à modifer et l'ordre du slider
   switch (i) {
     case 0:
       nb_animaux_simu->setValue(value);

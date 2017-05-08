@@ -1,6 +1,13 @@
+// -------------------------------------------------------------------------------------------- //
+// ----- Fichier      : Animal.hpp                                                        ----- //
+// ----- Type         : source                                                            ----- //
+// ----- Auteur       : Jérémy                                                            ----- //
+// ----- Description  : Permet de crée un animal et de le faire bouger                    ----- //
+// -------------------------------------------------------------------------------------------- //
 #include "Animal.hpp"
 #include "Simulation.hpp"
 
+// Constructeur
 Animal::Animal(Simulation * m, int x, int y, int energie, QPixmap i) : energie(energie){
   this->monde = m; // On défini le monde de l'animal
   this->setPos(x, y); // On initialise la position de l'image
@@ -8,20 +15,26 @@ Animal::Animal(Simulation * m, int x, int y, int energie, QPixmap i) : energie(e
   taille = i.width(); // On récupère la taille de l'image
 }
 
+// Getter energie
 int Animal::getEnergie(){
   return this->energie;
 }
 
+// Setter energie
 void Animal::setEnergie(int energie){
   this->energie = energie;
 }
-
+// -------------------------------------------------------------------------------------------- //
+// Fonction bouge
+// Permet de déplacer un animal
+// Argument : sens pour un déplacement intelligent
+// -------------------------------------------------------------------------------------------- //
 void Animal::bouge(int sens) {
   int speed = 1; // Vitesse des animaux
 
   // Si le sens vaut -1 aucun déplacement intelligent n'est à faire
   if(sens == -1) sens = rand() % 4; // Donc on choisi un sens aléatoire
-  if(this->getID() == 'L') speed = 2;
+  if(this->getID() == 'L') speed = 2; // Si c'est un lion il va 2 fois plus vite
   switch(sens) { // Direction
     case 0:
       // Ouest
@@ -59,3 +72,6 @@ void Animal::bouge(int sens) {
     monde->setMort(monde->getMort() + 1);
   }
 }
+// -------------------------------------------------------------------------------------------- //
+// -------------------------------------------------------------------------------------------- //
+// -------------------------------------------------------------------------------------------- //

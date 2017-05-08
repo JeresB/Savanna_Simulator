@@ -1,13 +1,19 @@
+// -------------------------------------------------------------------------------------------- //
+// ----- Fichier      : Animal.hpp                                                        ----- //
+// ----- Type         : header                                                            ----- //
+// ----- Auteur       : Jérémy                                                            ----- //
+// ----- Description  : Permet de crée un animal et de le faire bouger                    ----- //
+// -------------------------------------------------------------------------------------------- //
 #ifndef ANIMAL_H
 #define ANIMAL_H
 
 #include <QGraphicsPixmapItem>
-#include <QPixmap>
 
 class Simulation;
 
 class Animal : public QGraphicsPixmapItem {
   public:
+    // Constructeur et destructeur
     Animal(Simulation * m, int x, int y, int energie, QPixmap i);
     ~Animal(){};
 
@@ -19,6 +25,7 @@ class Animal : public QGraphicsPixmapItem {
     void setEnergie(int energie);
     virtual void setID(char id_set) = 0;
 
+    // Méthode
     void bouge(int sens);
 
   protected :
