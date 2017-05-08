@@ -221,7 +221,7 @@ void MainWindow::slot_configuration() {
 
   file = QInputDialog::getText(NULL,"Fichier","Choississez un fichier de configuration !");
 
-  QFile fichier(file);
+  QFile fichier(file + ".txt");
   if(fichier.open(QIODevice::ReadOnly | QIODevice::Text)) {
     QTextStream flux(&fichier);
     for (int i = 0; i < 6; i++) {
